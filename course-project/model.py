@@ -5,8 +5,6 @@ from mesa       import Agent, Model
 from mesa.time  import RandomActivation
 from mesa.space import MultiGrid
 
-speeds = numpy.arange(0.40, 0.95, 0.05)
-
 def manhatan_dist(pos_a, pos_b):
     return(abs(pos_a[0] - pos_b[0]) + abs(pos_a[1] - pos_b[1]))
 
@@ -17,7 +15,16 @@ class Gate(Agent):
         self.gate_type = gate_type
     
     def step(self):
-        pass
+        print("Step on postion:", self.pos)
+        this_cell = self.model.grid.get_cell_list_contents([self.pos])
+        people = [obj for obj in this_cell if isinstance(obj, Person)]
+        print("People:" + str(people))
+        if len(people) > 0:
+            person_to_remove = random.choice(people)
+            print("Removed:", person_to_remove.unique_id)
+            self.model.grid._remove_agent(self.pos, person_to_remove)
+            self.model.schedule.remove(person_to_remove)
+            self.model.removals.append(person_to_remove.unique_id)
     
 class Wall(Agent):
     """An agent that restrict person movements"""
@@ -31,18 +38,19 @@ class Person(Agent):
     """An agent with fixed initial wealth."""
     def __init__(self, unique_id, model):
         super().__init__(unique_id, model)
-        self.speed = random.choice(speeds)
+        self.speed = random.choice(numpy.arange(0.40, 0.95, 0.05))
         self.type = random.choice(["left", "right"])
         
     def move(self):
         
+        print("Moving agent: ", self.unique_id)
         possible_steps = self.model.grid.get_neighborhood(
             self.pos,
             moore=True,
-            include_center=False)
+            include_center=True)
 
         for neighbor in  self.model.grid.neighbor_iter(self.pos):
-            if ((type(neighbor) != Wall) and (type(neighbor) != Person)) and (neighbor.pos in possible_steps):
+            if ((isinstance(neighbor, Wall) or isinstance(neighbor, Person)) and (neighbor.pos in possible_steps)):
                 possible_steps.remove(neighbor.pos)
         
         print(possible_steps)
@@ -59,8 +67,9 @@ class Person(Agent):
         self.model.grid.move_agent(self, new_position)
         
     def step(self):
-        #if (numpy.random() < self.speed):
-        self.move()
+        if self.unique_id not in self.model.removals:
+            #if (numpy.random() < self.speed):
+            self.move()
 
 
 class MetroModel(Model):
@@ -70,6 +79,7 @@ class MetroModel(Model):
         self.grid = MultiGrid(width, height, False)
         self.schedule = RandomActivation(self)
         self.running = True
+        self.removals = []
 
         #Create Walls
         agent_id = 1
@@ -121,4 +131,5 @@ class MetroModel(Model):
             agent_id += 1
 
     def step(self):
+        self.removals = []
         self.schedule.step()
