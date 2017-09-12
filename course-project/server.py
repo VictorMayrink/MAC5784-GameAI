@@ -14,10 +14,10 @@ def agent_portrayal(agent):
         portrayal = {"Shape": "arrowHead",
                      "Filled": "true",
                      "scale": 0.5,
-                     "heading_x": 1,
+                     "heading_x": 1 if agent.source == "left" else -1,
                      "heading_y": 0,
                      "Layer": 3,
-                     "Color": "red"}
+                     "Color": "red" if agent.source == "right" else "blue"}
     
     elif (type(agent) == Wall):
         
@@ -40,9 +40,14 @@ def agent_portrayal(agent):
         
 
 grid = CanvasGrid(agent_portrayal, 40, 30, 750, 400)
-n_slider = UserSettableParameter('slider', "Number of Agents", 100, 2, 200, 1)
+
+leftRate_slider = UserSettableParameter("slider", "Left Rate", 0.35, 0, 1, 0.05)
+rightRate_slider = UserSettableParameter("slider", "Right Rate", 0.35, 0, 1, 0.05)
 
 server = ModularServer(MetroModel,
                        [grid],
                        "Money Model",
-                       {"N": n_slider, "width": 40, "height": 30})
+                       {"leftRate": leftRate_slider,
+                        "rightRate": rightRate_slider,
+                        "width": 40,
+                        "height": 30})
