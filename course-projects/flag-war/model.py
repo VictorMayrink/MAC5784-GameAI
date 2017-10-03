@@ -12,7 +12,6 @@ def manhatan_dist(pos_a, pos_b):
 
     
 class Person(Agent):
-    """An agent with fixed initial wealth."""
     def __init__(self, unique_id, model, source):
         super().__init__(unique_id, model)
         self.speed = random.choice(speeds)
@@ -90,14 +89,20 @@ class Wall(Agent):
 
 
 class MetroModel(Model):
-    """A model with some number of agents."""
-    def __init__(self, width, height, leftRate, rightRate):
+    """
+    Metro Station Model:
+    There are two gates in opposite sides.
+    Each gate has 
+    """
+    def __init__(self, width, height, leftRateSlider, rightRateSlider):
         self.grid = MultiGrid(width, height, False)
         self.schedule = RandomActivation(self)
         self.running = True
         self.removals = []
-        self.leftRate = leftRate
-        self.rightRate = rightRate
+        self.leftRateSlider = leftRateSlider
+        self.rightRateSlider = rightRateSlider
+        self.leftRate = self.leftRateSlider.value
+        self.rightRate = self.rightRateSlider.value
         self.agent_id = 0
         
         w = width-1
@@ -143,5 +148,7 @@ class MetroModel(Model):
             self.agent_id += 1
 
     def step(self):
+        self.leftRate = self.leftRateSlider.value
+        self.rightRate = self.rightRateSlider.value
         self.removals = []
         self.schedule.step()
