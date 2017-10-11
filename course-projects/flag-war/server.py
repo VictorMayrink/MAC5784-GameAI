@@ -1,53 +1,72 @@
-from model import MetroModel
-from model import Person
-from model import Wall
-from model import Gate
+########
+#IMPORTS
+########
 
-from mesa.visualization.modules import CanvasGrid
-from mesa.visualization.UserParam import UserSettableParameter
-from ModularVisualization import ModularServer
+from model import CaptureFlag
+from model import Delivery
+from model import Player
+from model import Flag
+from model import Jail
+
+from mesa.visualization.modules   import CanvasGrid
+from ModularVisualization         import ModularServer
+
+########################
+#FUNCTIONS AND VARIABLES
+########################
+
+flag_colors = ["blue", "red"]
+player_colors = ["blue", "red"]
+delivery_colors = ["#D46A6A", "#5B8CC3"]
+
+###########
+#PORTRAYALS
+###########
 
 def agent_portrayal(agent):
     
-    
-    if (type(agent) == Person):
+    if (type(agent) == Player):
         portrayal = {"Shape": "arrowHead",
                      "Filled": "true",
                      "scale": 0.5,
-                     "heading_x": 1 if agent.source == "left" else -1,
-                     "heading_y": 0,
+                     "heading_x": agent.orientation[0],
+                     "heading_y": agent.orientation[1],
                      "Layer": 3,
-                     "Color": "red" if agent.source == "right" else "blue"}
+                     "Color": player_colors[agent.team]}
     
-    elif (type(agent) == Wall):
-        
+    elif (type(agent) == Jail):
         portrayal = {"Shape": "rect",
              "Filled": "true",
-             "Color": "black",
+             "Color": "gray",
              "Layer": 2,
              "w": 1,
              "h": 1}
     
-    elif (type(agent) == Gate):
+    elif (type(agent) == Flag):      
+        portrayal = {"Shape": "circle",
+                     "Filled": "true",
+                     "Color": flag_colors[agent.team],
+                     "Layer": 1,
+                     "r": 0.7}
+        
+    elif (type(agent) == Delivery):      
         portrayal = {"Shape": "rect",
                      "Filled": "true",
-                     "Color": ("#8D99A2" if agent.gate_type == "left" else "#EA7869"),
+                     "Color": delivery_colors[agent.team],
                      "Layer": 1,
                      "w": 1,
                      "h": 1}
         
     return portrayal
         
+width = 40
+height = 27
+pixels = 18
 
-grid = CanvasGrid(agent_portrayal, 40, 30, 750, 400)
+grid = CanvasGrid(agent_portrayal, width, height, pixels*width, pixels*height)
 
-leftRate_slider = UserSettableParameter("slider", "Left Rate", 0.15, 0, 0.35, 0.01)
-rightRate_slider = UserSettableParameter("slider", "Right Rate", 0.15, 0, 0.35, 0.01)
-
-server = ModularServer(MetroModel,
+server = ModularServer(CaptureFlag,
                        [grid],
-                       "Metro Station Model",
-                       {"leftRateSlider": leftRate_slider,
-                        "rightRateSlider": rightRate_slider,
-                        "width": 40,
-                        "height": 30})
+                       "Capture the Flag",
+                       {"width": width,
+                        "height": height})
