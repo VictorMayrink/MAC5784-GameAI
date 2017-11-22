@@ -9,13 +9,15 @@ import random
 import numpy
 import math
 
-import influence_masks as im
-import patrolling as pt
+import projects.flag.influence_masks as im
+import projects.flag.patrolling as pt
 
 from mesa       import Agent, Model
 from mesa.time  import RandomActivation
 from mesa.space import MultiGrid
 from astar      import AStar
+
+from mesa.visualization.UserParam import UserSettableParameter
 
 ############################
 #FUNCTION: Diagonal distance
@@ -176,7 +178,6 @@ class Player(Agent):
             else:
                 self.cover(player_with_enemy_flag)
         else:
-            print("capture")
             self.capture_flag()
     #Attack Flag Behavior<
     #--------------------<
@@ -192,12 +193,11 @@ class Player(Agent):
         target_vec = numpy.subtract(self.model.team_flag[self.team].pos, self.pos)
         inner_prod = numpy.inner(target_vec, self.model.neighborhood_norm)
         self.orientation = self.model.neighborhood[inner_prod.argmax()]
-        self.fire()        
+        self.fire()     
     
     #------------->
     #Fire Behavior>
     def fire(self):
-        print(self.orientation)
         fs = FireShot(self.model.agent_id, self.model, self.orientation, self.pos)
         self.model.schedule.add(fs)
         self.model.agent_id += 1
@@ -214,15 +214,19 @@ class Player(Agent):
                         self.model.team_flag[self.team].pos[1] + delta[1])
         neighbors = [neighbor for neighbor in self.model.grid.get_cell_list_contents(new_position) if not isinstance(neighbor, Delivery)]
         if not neighbors: self.move(new_position)
-            
-    def rescue_flag(self):    
-        pmoves = possible_moves(self, self.pos)
-        distances = numpy.zeros(len(pmoves))        
-        for index, pm in enumerate(pmoves):
-            distances[index] = manhattan_dist(self.model.flag_pos[self.team], pm)
-            if pm == self.pos: distances[index] += 1 #If I can't move closer, I can move farther 
-        new_position = pmoves[distances.argmin()]  
-        if (new_position != self.pos): self.move(new_position)
+    
+    def hit_chance(self):
+        mat1 = numpy.zeros(self.model.playermap.shape)
+        mat2 = numpy.zeros(self.model.playermap.shape)
+        target_vec = numpy.subtract(self.model.team_flag[self.team].pos, self.pos)
+        inner_prod = numpy.inner(target_vec, self.model.neighborhood_norm)
+        shot_orientation = self.model.neighborhood[inner_prod.argmax()]
+        mat1 = im.sum_inf_mask(mat1, im.fs_inf_mask[shot_orientation], (self.pos[0]+shot_orientation[0], self.pos[1]+shot_orientation[1]))
+        opponent = self.model.team_flag[self.team].player
+        mat2 = im.sum_inf_mask(mat2, im.player_inf_mask, opponent.pos)
+        for ally in self.model.team_players[self.team]:
+            mat2 = im.sum_inf_mask(mat2, -im.player_inf_mask, ally.pos)
+        return(numpy.sum(numpy.multiply(mat1, mat2)))
             
     def go_to_flag(self):    
         pmoves = possible_moves(self, self.pos)
@@ -235,9 +239,9 @@ class Player(Agent):
         if (new_position != self.pos): self.move(new_position)
             
     def defend_flag(self):
+        
         if self.model.team_flag[self.team].player:
-            #self.rescue_flag()
-            if random.random() > 0.7:
+            if self.hit_chance() > 30:
                 self.shoot_at_flag()
             else:
                 self.go_to_flag()
@@ -273,6 +277,7 @@ class Flag(Agent):
         
     def step(self):
         if self.pos in self.model.delivery_pos[(self.team + 1) % 2]:
+            self.model.scoreboard[(self.team + 1) % 2] += 1
             self.player.flag = None
             self.player = None
             self.respawn()
@@ -361,7 +366,7 @@ class CaptureFlag(Model):
     Capture the Flag:
     """
     
-    def __init__(self, width, height):
+    def __init__(self, width, height, blueOffenseSlider, redOffenseSlider):
         self.grid = MultiGrid(width, height, False)
         
         #Parameters
@@ -379,6 +384,20 @@ class CaptureFlag(Model):
         
         self.neighborhood = [(1,0),(0,1),(-1,0),(0,-1),(1,1),(-1,-1),(-1,1),(1,-1)]
         self.neighborhood_norm = numpy.array(self.neighborhood) / numpy.linalg.norm(self.neighborhood, axis = 1)[:,None]
+        
+        #-----------------
+        #Tactical Settings
+        self.blueOffenseSlider = blueOffenseSlider
+        self.redOffenseSlider  = redOffenseSlider
+        
+        self.tacticalSettings = [
+                self.blueOffenseSlider.value if isinstance(self.blueOffenseSlider, UserSettableParameter) else self.blueOffenseSlider,
+                self.redOffenseSlider.value if isinstance(self.redOffenseSlider, UserSettableParameter) else self.redOffenseSlider
+                ]
+        
+        #----------
+        #ScoreBoard
+        self.scoreboard = [0, 0]
         
         #--------------
         #Influence maps
@@ -451,14 +470,18 @@ class CaptureFlag(Model):
                 self.grid.place_agent(d, pos)
                 self.schedule.add(d)
                 self.agent_id += 1
-                
-        numpy.savetxt("infmap.csv", self.playermap,  delimiter=",")
-        self.team_players[0][0].action = "attack_flag"
-        self.team_players[0][1].action = "attack_flag"
-        self.team_players[1][0].action = "attack_flag"
-        self.team_players[1][1].action = "attack_flag"
     
     def step(self):
+        if isinstance(self.blueOffenseSlider, UserSettableParameter):
+            self.tacticalSettings[0] = self.blueOffenseSlider.value
+        if isinstance(self.redOffenseSlider, UserSettableParameter):
+            self.tacticalSettings[1] = self.redOffenseSlider.value
+        
+        for tp in range(len(self.team_players)):
+            for p in range(len(self.team_players[tp])):
+                if p < self.tacticalSettings[tp]:
+                    self.team_players[tp][p].action = "attack_flag"
+        
         self.schedule.step()
         self.removals = []
         numpy.savetxt("infmap.csv", self.playermap,  delimiter=",", fmt = "%.2d")

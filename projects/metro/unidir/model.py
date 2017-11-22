@@ -12,6 +12,8 @@ from mesa       import Agent, Model
 from mesa.time  import RandomActivation
 from mesa.space import MultiGrid
 
+from mesa.visualization.UserParam import UserSettableParameter
+
 ############################
 #FUNCTION: Diagonal distance
 ############################
@@ -89,18 +91,23 @@ def possible_moves(walker, model):
 #Possible speeds for an agent
 speeds = numpy.arange(0.40, 0.95, 0.05)
 opposite_source = {"left": "right", "right": "left"}
+source_number = {"left": 0, "right": 1}
 
 class Walker(Agent):
     """
     An agent that moves toward the opposite gate
     """
-    def __init__(self, unique_id, model, source, orientation):
+    def __init__(self, unique_id, model, source, orientation, pos):
         super().__init__(unique_id, model)
         self.speed = random.choice(speeds)
         self.impatience = 1
         self.source = source
         self.orientation = orientation
         self.cant_move = 0
+        self.model.grid.place_agent(self, pos)
+        self.model.heatmap[source_number[self.source]][self.model.grid.height-self.pos[1], self.pos[0]] += 1
+        self.age = 0
+        self.dist = 0
         
         
     def move_on(self):
@@ -122,21 +129,25 @@ class Walker(Agent):
             if next_move != self.pos:
                 self.orientation = (next_move[0]-self.pos[0], next_move[1]-self.pos[1])
                 self.cant_move = 0
+                self.model.influence_map[
+                    self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
+                    self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] -= self.model.influence_mask
+                self.model.grid.move_agent(self, next_move)
+                self.model.influence_map[
+                    self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
+                    self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] += self.model.influence_mask
+                self.dist += numpy.linalg.norm(self.orientation)
             else:
                 self.cant_move += 1
 
-            self.model.influence_map[
-                self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
-                self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] -= self.model.influence_mask
-            self.model.grid.move_agent(self, next_move)
-            self.model.influence_map[
-                self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
-                self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] += self.model.influence_mask
+
         
-    def step(self):       
+    def step(self):
         if random.random() < self.speed:
             if self.unique_id not in self.model.removals:
                 self.move_on()
+        self.model.heatmap[source_number[self.source]][self.model.grid.height-self.pos[1], self.pos[0]] += 1
+        self.age += 1
                 
 ######################
 #CLASS: Entrance Agent
@@ -158,9 +169,8 @@ class Entry(Agent):
         #Create native walkers
         if not contents:
             if (random.random() < self.model.entry_rates[self.entry_type]):
-                p = Walker(self.model.agent_id, self.model, self.entry_type, walker_init_orient[self.entry_type])
+                p = Walker(self.model.agent_id, self.model, self.entry_type, walker_init_orient[self.entry_type], self.pos)
                 self.model.schedule.add(p)
-                self.model.grid.place_agent(p, self.pos)
                 self.model.agent_id += 1
                 self.model.influence_map[
                         self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
@@ -187,6 +197,8 @@ class Exit(Agent):
             self.model.grid._remove_agent(self.pos, f)
             self.model.schedule.remove(f)
             self.model.removals.append(f.unique_id)
+            self.model.walker_ages.append([f.speed, f.age])
+            self.model.walker_dists.append([f.speed, f.dist])
 
 ##################
 #CLASS: Wall Agent
@@ -220,7 +232,8 @@ class MetroModel(Model):
         self.rightRateSlider = rightRateSlider
         self.agent_id = 0
         self.moore_neighborhood = True
-        self.padding=2
+        self.padding = 2
+        self.heatmap = [numpy.zeros((height, width)), numpy.zeros((height, width))]
         self.influence_mask = numpy.array(
             [[0, 1, 1, 1, 0],
              [1, 2, 3, 2, 1],
@@ -229,9 +242,12 @@ class MetroModel(Model):
              [0, 1, 1, 1, 0]])
         self.influence_map = numpy.zeros((width+2*self.padding, height+2*self.padding))
         
+        self.walker_dists = []
+        self.walker_ages = []
+        
         #Gates settings
-        self.entry_rates = {"left":  self.leftRateSlider.value,
-                            "right": self.rightRateSlider.value}
+        self.entry_rates = {"left":  self.leftRateSlider.value if isinstance(self.leftRateSlider, UserSettableParameter) else self.leftRateSlider,
+                            "right": self.rightRateSlider.value if isinstance(self.rightRateSlider, UserSettableParameter) else self.rightRateSlider}
         
         self.entries = {"left": [], "right": []}
         entries_x = {"left": 0, "right": width-1}
@@ -283,7 +299,9 @@ class MetroModel(Model):
                   "right": numpy.array([g.pos for g in self.exits["right"]])}
 
     def step(self):
-        self.entry_rates["left"] = self.leftRateSlider.value
-        self.entry_rates["right"] = self.rightRateSlider.value
+        if isinstance(self.leftRateSlider, UserSettableParameter):
+            self.entry_rates["left"] = self.leftRateSlider.value
+        if isinstance(self.rightRateSlider, UserSettableParameter):
+            self.entry_rates["right"] = self.rightRateSlider.value        
         self.removals = []
         self.schedule.step()
