@@ -1,0 +1,362 @@
+\documentclass[preprint,12pt]{elsarticle}
+
+\usepackage[brazil]{babel}
+\usepackage[utf8]{inputenc}
+
+\usepackage[a4paper,top=3cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{textcomp}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{lineno}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[numbers]{natbib}
+
+
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\captionsetup{compatibility=false}
+\usepackage{url}
+\usepackage{multirow}
+\usepackage{makecell}
+
+\usepackage{etoolbox}
+\patchcmd{\abstract}{Abstract}{Resumo}{}{}
+
+%% Removing lines when no abstract is given
+\makeatletter
+\renewcommand{\MaketitleBox}{
+	\resetTitleCounters
+	\def\baselinestretch{1}
+	\begin{center}
+		\def\baselinestretch{1}
+		\Large \@title \par
+		\vskip 18pt
+		\normalsize\elsauthors \par
+		\vskip 10pt
+		\footnotesize \itshape \elsaddress \par
+	\end{center}
+	\vskip 12pt
+}
+\makeatother
+
+%% Removing custom footer on first page
+\makeatletter
+\def\ps@pprintTitle{
+	\let\@oddhead\@empty
+	\let\@evenhead\@empty
+	\def\@oddfoot{\centerline{\thepage}}
+	\let\@evenfoot\@oddfoot
+}
+\makeatother
+
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blu}[1]{\textcolor{blue}{#1}}
+\newcommand{\score}[2]{\blu{#1}$\times$\red{#2}}
+
+\begin{document}
+		
+\title{Construção de modelos baseados em agentes utilizando técnicas de inteligência artificial para jogos de computadores}
+\author{Victor Teixeira de Melo Mayrink}
+\address{MAC5784 - Inteligência Artificial em Jogos de Computador}
+
+\begin{abstract}
+	Este trabalho apresenta uma metodologia para construir modelos baseados em agentes, em combinação com algumas técnicas de inteligência artificial que normalmente são utilizadas no contexto de jogos de computador. A metodologia proposta é ilustrada através da implementação de dois modelos distintos: o primeiro simula o fluxo de pessoas atravessando uma estação de metrô em sentidos opostos; o segundo modelo simula um jogo clássico em que dois times adversários competem para capturar a bandeira do oponente. Os aspectos práticos de implementação são discutidos em detalhes, assim como os resultados observados e as conclusões realizadas.
+\end{abstract}
+
+\maketitle
+
+\section{Introdução}
+\label{sec:intro}
+
+A modelagem baseada em agentes é um paradigma para construção de modelos computacionais a partir de entidades autônomas, chamadas \textit{agentes}, capazes de interagir entre si e com o ambiente onde estão inseridas.
+
+Um dos primeiros e mais conhecidos modelos baseados em agentes foi publicado em 1971 por Thomas Schelling, ao demonstrar como grupos étnicos diferentes tendem a se segregar ao longo do tempo. O resultado observado foi surpreendente: se cada indivíduo (ou família) possuir uma preferência em residir próximo de pessoas do mesmo grupo étnico, então os diferentes grupos tendem a se segregar de forma muito expressiva ao longo do tempo, mesmo que a preferência por vizinhos do mesmo grupo seja muito pequena.
+
+Apesar de bastante simples, o modelo de Schelling permitiu extrair conclusões interessantes sobre o comportamento social dos indivíduos e explicar porque é tão difícil combater o problema de segregação. Na prática, ao modelar sistemas a partir dos níveis hierárquicos mais básicos (por exemplo, o comportamento de um indivíduo), em geral é possível observar um certo nível de auto-organização. Muitas vezes, padrões e comportamentos que não foram explicitamente programados emergem através da interação entre os agentes \cite{macal2010tutorial}.
+
+A utilização de modelos baseados em agentes têm ganhado bastante interesse nas dua últimas décadas. As aplicações estendem-se em uma grande diversidade pesquisas; podemos destacar, por exemplo, trabalhos relevantes na área de ecologia \cite{grimm2006standard} e ciências sociais \cite{bonabeau2002agent}. 
+
+O escopo deste trabalho, no entanto, têm como objetivo combinar o paradigma de modelagem baseada em agentes com técnicas de inteligência artificial comumente empregadas no contexto de jogos de computadores.
+
+\newpage
+
+Conforme menciona \citet{millington2016artificial}, a modelagem baseada em agentes no contexto de jogos de computadores está relacionada à criação de personagens que são capazes de: $i)$ capturar informações sobre estado corrente do jogo (sensoreamento); $ii)$ analisar quais ações podem ser tomadas com base nas informações observadas; e $iii)$ executar a ação mais adequada tendo em vista um objetivo a ser alcançado.
+
+Para ilustrar a combinação destas duas técnicas, este trabalho descreve a modelagem de dois problemas diferentes. O primeiro modelo é uma simulação do fluxo de passageiros cruzando uma estação de metrô em sentidos opostos. Este modelo têm como objetivo construir um cenário que seja visualmente realista; sem, contudo, levar em consideração questões técnicas muito detalhadas, como por exemplo: o espaço médio ocupado por uma pessoa, a concentração máxima de pessoas por metro quadrado, ou ainda a função distribuição de probabilidades da velocidade em que as pessoas se movimentam nessas estações. Portanto, esse modelo simplificado da realidade, possivelmente não seria adequado para simular, por exemplo, uma situação de evacuação de uma estação em casos emergência. No entanto, tal modelo certamente seria útil para construir uma animação visualmente realista deste tipo de situação.
+
+O segundo modelo, inserido no contexto dos jogos de computador, simula uma competição entre duas equipes adversárias que disputam para capturar a bandeira do oponente e levá-la até uma região previamente delimitada. Neste contexto, o objetivo é construir uma estratégia suficientemente inteligente para competir com um jogador humano que esteja no comando de uma das equipes. O principal requisito, neste caso, é que o comportamento da equipe que está sendo simulada responda coerentemente às ações que seu adversário executa ao longo da partida.
+
+O presente trabalho foi dividido da seguinte maneira: a próxima seção descreve os objetivos gerais deste estudo. Em seguida, na seção 3, discutimos os principais conceitos do paradigma de modelagem baseada em agentes, incluindo alguns detalhes práticos de implementação. As seções 4 e 5 apresentam os modelos da estação de metrô e do jogo da bandeira, respectivamente. Finalmente, a seção 6 apresenta os resultados observados, e a seção 7 discute as conclusões do trabalho.
+
+\section{Objetivos}
+\label{sec:objetivos}
+
+Os objetivos desse trabalho são:
+
+\begin{enumerate}
+	\item Discutir os princípios da modelagem baseada em agentes;
+	\item Ilustrar a utilização do paradigma de modelagem baseada em agentes no contexto dos jogos de computador;
+	\item Demonstrar o processo de modelagem do comportamento individual dos agentes utilizando técnicas de inteligência artificial;
+	\item Analisar os comportamentos coletivos que emergem da interação entre vários agentes inseridos em um mesmo ambiente;
+	\item Apresentar como é possível extrair conclusões úteis sobre problemas realistas a partir de uma análise da simulação de um modelo computacional relativamente simples.
+\end{enumerate}
+
+\newpage
+
+\section{Modelagem baseada em agentes}
+\label{sec:experimentos}
+
+A modelagem baseada em agentes é um paradigma centrado no comportamento individual dos elementos que fazem parte de um sistema. Esta perspectiva contrasta com os métodos tradicionais de modelagem, como por exemplo simulações numéricas baseadas em equações diferenciais, que descrevem o comportamento de um sistema seguindo uma abordagem holística.
+
+Conforme com \citet{macal2005tutorial}, a construção de um modelo baseado em agentes envolve as seguintes etapas:
+
+\begin{enumerate}
+	\item identificar quais agentes do sistema e uma teoria sobre como esses agentes se comportam;
+	\item identificar o relacionamento entre os agentes e uma teoria sobre como e quando as interações acontecem;
+	\item coletar dados sobre o comportamento real dos agentes e do sistema que está sendo modelado;
+	\item validar o comportamento dos agentes e do modelo como um todo, utilizando os dados obtidos;
+	\item executar a simulação do modelo e analisar os resultados observados, relacionando os comportamentos em micro e macro escala.
+\end{enumerate}
+
+Evidentemente, dependendo do tipo de aplicação, nem todos os requisitos acima são absolutamente necessários para um modelo baseado em agentes. Por exemplo, no contexto de jogos de computadores, as etapas de coleta e validação de dados, apesar de útil, pode não ser necessária;  basta que o modelo atenda o objetivo final do problema, que é construir um cenário fictício em que os personagens atuem de forma coerente com seus objetivos no jogo.
+
+Contudo, se o problema em questão for a simular a evacuação de um shopping center em caso de incêndio; onde o objetivo é projetar e dimensionar as saídas de emergências do prédio, então é muito importante validar a teoria sobre o comportamento das pessoas em situações de pânico, garantir que o modelo criado seja o mais semelhante possível da realidade.
+
+\subsection{Implementação computacional dos modelos}
+\label{subsec:implementacao}
+
+O modelo computacional de um agente deve possuir variáveis de estado, como por exemplo sua posição geográfica ou a velocidade que ele se movimenta. Dependendo do tipo de problema, algumas desses atributos podem ser variáveis ou fixos durante a simulação. Muitas vezes é importante garantir que a população de agentes tenha características heterogêneas, por exemplo agentes que se movimentam com velocidades diferentes, ou que tenham comportamentos mais agressivos doo que outros.
+
+Da mesma forma, o ambiente também tem um estado que pode ser influenciado pelas ações do agentes, ou simplesmente pela sua própria presença, conforme discutiremos no caso dos agentes que possuem um mapa de influência no ambiente.
+
+O comportamento dos agentes pode ser implementado por funções que podem alterar o estado de um ou mais agentes, ou do próprio ambiente.
+
+Diante do exposto, do ponto de vista técnico é bastante natural adotar o paradigma de programação orientada à objetos para construir modelos baseados em agentes. Desta forma podemos pensar em cada agente da simulação como sendo uma instância de uma classe, com atributos e métodos próprios. 
+
+Nos modelos baseados em agentes a simulação se passa em instantes discretos de tempo, denominados \textit{ticks}, que correspondem às iterações da simulação. A cada passo de tempo, um ou mais agentes são \textit{ativados}. Ao ser ativado, o agente pode ter a oportunidade de tomar uma ação, o que lhe permite alterar o seu próprio estado e interagir com outro agente e/ou com o ambiente.
+
+No entanto, do ponto de vista computacional, não é possível ativar todos os agentes simultaneamente. Mesmo utilizando técnicas de computação paralela, em geral a quantidade de agentes de um modelo é maior que o número de núcleos de processamento da máquina. Além disso, podem haver partes do código que não são paralelizáveis. A ordem em que os agentes são ativados dentro de um mesmo \textit{tick} é controlada por um componente do modelo chamado \textit{scheduler}. Por exemplo, os agentes podem ser ativados em uma ordem aleatória, ou seguir sempre uma determinada ordem pré-definida.
+
+Finalmente, ainda de acordo com \cite{macal2005tutorial}, podemos resumir o processo de implementação de um modelo baseado em agentes nas seguintes etapas:
+
+\begin{enumerate}
+	\item Agentes: identificar os tipos de agentes e outros objetos (classes), juntamente com seus atributos;
+	\item Ambiente: definir o ambiente em que os agentes irão viver e interagir;
+	\item Métodos dos Agentes: especificar um conjunto de métodos em que o estado dos agentes é atualizado em resposta às interações agente-agente e agente-ambiente;
+	\item Interações: especificar os métodos que controlam quais agentes interagem, quando interagem e como interagem;
+	\item Implementação: implementar o modelo de agentes em algum software ou linguagem de programação.
+\end{enumerate}
+
+Os modelos desenvolvidos neste trabalho foram desenvolvidos na linguagem \textit{python} utilizando a biblioteca \textit{mesa} \cite{mesa2017agent}, que implementa um \textit{framework} para facilitar a criação de modelos baseados em agentes.
+
+\section{Fluxo de passageiros em uma estação de metrô}
+\label{sec:metro}
+
+Este experimento simula o fluxo de passageiros em uma estação de metrô. O cenário criado possui apenas dois acessos, e o objetivo dos passageiros é atravessar a estação até a saída localizada no lado oposto. A figura \ref{fig:metro} ilustra esse cenário em um determinado instante da simulação.
+
+\begin{figure}
+	\centering
+	\includegraphics[totalheight=5cm]{figures/metro.png}
+	\caption{Simulação do fluxo de pessoas em uma estação de metrô}
+	\label{fig:metro}
+\end{figure}
+
+Nesta simulação existem 3 tipos diferentes de agentes:
+
+\begin{itemize}
+	\setlength\itemsep{0pt}
+	\item roletas (\textit{gate}): representam os acessos da estação, sua função é inserir e/ou remover os passageiros no ambiente da simulação.
+	\item passageiros (\textit{walker}): são criados continuamente nas roletas e movimentam-se em direção à saída do lado oposto. Ao alcançarem a saída, são removidos da simulação.
+	\item barreira (\textit{wall}): é um agente auxiliar, sua única função é obstruir a movimentação dos passageiros.
+\end{itemize}
+
+O cenário da estação de metrô foi construído com uma malha (\textit{grid}) de $45 \times 30$ células. Os \textit{passageiros} podem movimentar-se somente sobre as \textit{roletas} e células vazias que estejam dentro da vizinhança de sua posição atual (considerando uma vizinhança de \textit{Moore} com raio unitário). Não é permitido que dois ou mais passageiros ocupem uma mesma célula simultaneamente. 
+
+A cada passo de tempo, os agentes do tipo \textit{roleta} verificam se algum \textit{passageiro} vindo da direção oposta chegou até a sua posição; em caso positivo, este agente é removido da simulação. Em seguida, a \textit{roleta} tem uma probabilidade $\rho$ de criar um novo passageiro que irá seguir em direção à saída oposta. Roletas localizadas no mesmo lado da estação possuem a mesma probabilidade de criar novos passageiros. Portanto, existem dois parâmetros, $\rho_r$ e $\rho_l$, que controlam o fluxo de entrada de passageiros do lado direito e esquerdo da estação, respectivamente. Estes parâmetros podem ser ajustados durante a própria da simulação e variam dentro do intervalo $[0; 0,7]$.
+
+As roletas podem ser \textit{bidirecionais} ou \textit{unidirecionais}. Roletas bidirecionais podem inserir e remover os passageiros da simulação. Já as roletas unidirecionais podem ser do tipo \textit{entrada} (apenas inserem novos passageiros), ou \textit{saída} (apenas removem os passageiros existentes). 
+
+A cada passo da simulação, cada \textit{passageiro} $p$ tem uma probabilidade $\sigma_p$ de lhe ser concedida a oportunidade de se mover. Conforme sugere a notação, esta probabilidade varia de indivíduo para indivíduo, o que permite criar \textit{passageiros} que se movem com mais frequência que outros. Portanto, o atributo $sigma_p$, associado ao passageiro $p$ representa a velocidade com que esse passageiro se movimenta. Esse atributo é sorteado no momento em que o agente é criado pela roleta e permanece constante durante toda a simulação.
+
+Quando um agente do tipo \textit{passageiro} tem a oportunidade de se mover ele precisa decidir qual movimento deseja realizar. Esta decisão é implementada seguindo uma estratégia bastante simples: o passageiro verifica quais são todos os movimentos possíveis e então move-se para a célula que minimiza uma \textit{função de avaliação estática} (\cite{millington2016artificial}, cap. 8) predefinida.
+
+A função de avaliação utilizada é composta pela soma de duas componentes: $i)$ o custo do movimento, e $ii)$ a distância da nova posição até a roleta de saída mais próxima.
+
+O custo do movimento é calculado da usando a seguinte convenção: movimentos ortogonais têm custo unitário, enquanto que os deslocamentos na diagonal têm custo de $\sqrt{2}$. Esta estratégia evita que os passageiros fiquem fazendo movimentos diagonais e trocando de direção com muita frequência, o que causaria um comportamento anormal de zigue-zague.
+
+Além do custo do movimento, 
+
+\section{Competição de capturar a bandeira}
+\label{sec:sim2}
+
+Este experimento simula uma competição entre dois times adversários. O objetivo de cada equipe é capturar a bandeira do oponente e levá-la até a área de entrega. A figura \ref{fig:flag-ini} ilustra a configuração inicial do jogo:
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[totalheight=5cm]{figures/flag-ini.png}
+	\caption{Configuração inicial do jogo}
+	\label{fig:flag-ini}
+\end{figure}
+
+Para este jogo foram necessários 5 tipos diferentes de agentes:
+
+\begin{itemize}
+	\setlength\itemsep{0pt}
+	\item jogador (\textit{player}): possui a capacidade de se mover; capturar e transportar a bandeira do time adversário; e disparar projéteis para defender sua bandeira.
+	\item bandeira (\textit{flag}): é um agente totalmente passivo. Uma vez capturada e entregue pelo time adversário, a bandeira reaparece na posição inicial.
+	\item projétil (\textit{fireshot}): é o agente criado quando um jogador realiza um disparo. O projétil movimenta-se em uma trajetória retilínea até atingir algum alvo ou percorrer uma distância máxima. 
+	\item zona de entrega (\textit{delivery}): também foi modelada como um agente. Apesar de não poder se mover, a zona de entrega pode ser posicionada em qualquer ponto do \textit{grid}. Sua única ação é recolher a bandeira do time adversário quando algum jogador a trouxer até a sua posição.
+	\item barreira (\textit{wall}): assim como na da simulação anterior, a barreira é um agente totalmente inanimado. Sua única função é obstruir o movimento dos jogadores e funcionar como um anteparo para os projéteis.
+\end{itemize}
+
+O cenário da simulação é um campo de batalha discretizado em uma malha de $40 \times 27$ células. Cada time possui sua própria bandeira, oito jogadores e uma área de entrega que ocupa oito células (na prática, existe um agente do tipo \textit{zona de entrega} em cada célula), conforme ilustrado na figura \ref{fig:flag-ini}. A tabela abaixo apresenta a representação gráfica dos agentes:
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{ c  p{8cm} }
+			\toprule
+			Representação gráfica & Descrição \\ 
+			\cmidrule(r){1-1}\cmidrule(lr){2-2}
+			
+			\includegraphics[width=5mm, height=5mm]{figures/player.png}
+			& 
+			Jogador \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/flag.png}
+			& 
+			Bandeira \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/delivery.png}
+			& 
+			Zona de entrega \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/fireshot.png}
+			& 
+			Projétil \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/wall.png}
+			& 
+			Barreira \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/player_with_flag.png}
+			& 
+			Jogador transportando a bandeira adversária \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/fired_player_3.png}
+			& 
+			Jogador atingido por projétil \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/player_stopped.png}
+			& 
+			Jogador imobilizado \\
+			
+			\includegraphics[width=5mm, height=5mm]{figures/fired_wall.png}
+			& 
+			Colisão do projétil na barreira \\
+			\bottomrule
+		\end{tabular}
+		\caption{Representação gráfica dos agentes e seus estados.}
+		\label{tbl:graphics}
+	\end{center}
+\end{table}
+
+Para manter o equilíbrio do jogo, foram estabelecidas as seguintes regras:
+
+\begin{enumerate}
+	\setlength\itemsep{0em}
+	\item A posição inicial dos jogadores e das bandeiras é simétrica, de forma a não favorecer nenhuma das duas equipes
+	\item A cada passo da simulação cada jogador tem uma probabilidade de 50\% de poder fazer alguma ação.
+	\item Se o jogador tiver a oportunidade de tomar uma ação, ele deve escolher se deseja mover-se ou fazer um disparo (não é permitido fazer as duas ações ao mesmo tempo).
+	\item Os jogadores podem movimentar-se para qualquer uma das 8 células vizinhas (vizinhança de Moore), desde que elas não estejam ocupadas por algum outro jogador ou por uma barreira. Também não é permitido que o jogador se movimente para uma célula que esteja na vizinhança da bandeira de sua própria equipe, exceto se ela estiver em posse do time adversário.
+	\item O jogador tem direito de mudar sua orientação antes de fazer um disparo. Um agente \textit{projétil} será criado na célula em que sua orientação está apontando e irá seguir em linha reta de acordo com esta direção inicial.
+	\item O projétil se desloca uma célula por turno e, portanto, tem, em média, o dobro da velocidade de um jogador
+	\item O projétil é removido quando atinge um jogador, uma barreira, ou depois de percorrer uma distância máxima de 15 células.	
+	\item O jogador que for atingido por um projétil fica imobilizado por 10 turnos
+	\item Ao fazer um disparo o jogador fica 3 turnos sem poder disparar novamente (tempo de recarga). No entanto, durante esse período ele continua tendo oportunidade de se mover.
+\end{enumerate}
+
+\section{Resultados}
+\label{sec:resultados}
+
+Nesta seção apresentamos alguns resultados interessantes sobre os modelos apresentados neste trabalho.
+
+\subsection{Regiões da estação com maior circulação de pessoas}
+\label{subsec:metro_heatmap}
+
+Em uma situação real, é pode ser interessante saber quais são as regiões da estação que possuem maior circulação de pessoas
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[totalheight=7cm]{figures/heatmap.png}
+	\caption{Simulação do fluxo de pessoas em uma estação de metrô}
+	\label{fig:heatmap}
+\end{figure}
+
+\subsection{Distância percorrida para atravessar a estação}
+\label{subsec:tempo_travessia}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[totalheight=7cm]{figures/dist_boxplot.png}
+	\caption{Simulação do fluxo de pessoas em uma estação de metrô}
+	\label{fig:dist_boxplot}
+\end{figure}
+
+\subsection{Configuração das roletas}
+\label{subsec:direcao_roletas}
+
+\subsection{Esquema tático das equipes}
+\label{subsec:esquema_tatico}
+
+\begin{table}[H]
+	\begin{center}
+		\begin{tabular}{cp{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}}
+			\toprule
+			Esquema tático & \red{1A$\times$7D}  & \red{2A$\times$6D}  & \red{3A$\times$4D}  & \red{4A$\times$4D}  & \red{5A$\times$3D}  & \red{6A$\times$3D}  & \red{7A$\times$1D}\\
+			\cmidrule(r){1-8}
+			\blu{1A$\times$7D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{2A$\times$6D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{3A$\times$5D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{4A$\times$4D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{5A$\times$3D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{6A$\times$2D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{7A$\times$1D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+
+			\bottomrule
+		\end{tabular}
+		\caption{Representação gráfica dos agentes e seus estados.}
+		\label{tbl:graphics}
+	\end{center}
+\end{table}
+
+
+\section{Conclusão}
+\label{sec:conclusao}
+
+Neste trabalho apresentamos como o conceito de modelagem baseada em agentes pode ser aplicado no contexto de jogos de computador. O comportamento dos agentes foi modelado utilizando-se técnicas de inteligência artificial comumente empregadas em na construção de jogos: árvores de decisão, mapas de influência, função de avaliação estática, e o algoritmo \textit{A*}.
+
+Para ilustrar a utilização desses conceitos, apresentamos dois modelos distintos: a simulação do fluxo de passageiros em uma estação de metrô e o jogo de competição pela bandeira adversária. 
+
+O primeiro caso envolve um modelo bastante simples em que os passageiros se comportam de forma puramente egoísta. A tomada de decisão dos passageiros resume-se à minimizar uma função de avaliação que considera apenas o custo do movimento e a distância até a saída mais próxima. Apesar da simplicidade do modelo, os resultados em escala macro levaram à um comportamento bastante verissímil; o suficiente, por exemplo, para produzir uma animação para um filme ou jogo de computador.
+
+Por outro lado, o modelo de competição pela bandeira exige que os agentes se comportem seguindo uma estratégia bem mais elaborada. Os jogadores da mesma equipe precisam atuar de forma colaborativa entre si e competitiva com os times da outra equipe. Estes objetivos produzem uma árvore de comportamentos bem diversificada, que inclui ações como: (1) guardar sua própria bandeira, (2) resgatar sua bandeira da posse do adversário, (3) atacar a bandeira adversária, (4) carregar a bandeira do adversário até a área de entrega, ou (5) dar cobertura ao jogador que está carregando a bandeira do adversário. 
+
+Uma vez que o jogador decide qual comportamento ele deve tomar, é necessário decidir também para qual direção ele deve se mover (ou em qual direção deve disparar), de forma a atingir os objetivos pretendidos com o comportamento escolhido. Essas decisões são feitas com base em uma análise sobre o estado atual do ambiente e dos agentes, tanto aliados como adversários, o que torna o processo de decisão bastante complexo.
+
+No entanto, ainda é possível aprimorar os modelos propostos em vários aspectos. Algumas propostas de trabalhos futuros incluem: (1) associar grandezas físicas usando dados realistas ao modelo de fluxo de passageiros, considerando, por exemplo, a área média ocupada por uma pessoa, as dimensões da estação, e a velocidade das pessoas; (2) rever as regras gerais do jogo de capturar a bandeira, de tal forma que o resultado das equipes fique mais sensível à escolha de um esquema tático e da estratégia de jogo dos agentes; (3) implementar comportamentos mais elaborados para os jogadores, levando em consideração previsões sobre as ações mais prováveis do adversário, por exemplo, para defender-se de um ataque de forma preventiva e não puramente reativa.
+
+\section*{Referências}
+
+\bibliography{references.bib}
+\bibliographystyle{unsrtnat}
+
+\end{document}
