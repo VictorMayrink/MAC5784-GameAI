@@ -278,7 +278,8 @@ class Flag(Agent):
     def step(self):
         if self.pos in self.model.delivery_pos[(self.team + 1) % 2]:
             self.model.scoreboard[(self.team + 1) % 2] += 1
-            self.player.flag = None
+            if self.player:
+                self.player.flag = None
             self.player = None
             self.respawn()
 
