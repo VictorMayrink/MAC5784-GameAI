@@ -18,6 +18,7 @@
 \usepackage{lineno}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{array}
 \usepackage[numbers]{natbib}
 
 
@@ -113,7 +114,7 @@ Os objetivos desse trabalho são:
 \newpage
 
 \section{Modelagem baseada em agentes}
-\label{sec:experimentos}
+\label{sec:agentes}
 
 A modelagem baseada em agentes é um paradigma centrado no comportamento individual dos elementos que fazem parte de um sistema. Esta perspectiva contrasta com os métodos tradicionais de modelagem, como por exemplo simulações numéricas baseadas em equações diferenciais, que descrevem o comportamento de um sistema seguindo uma abordagem holística.
 
@@ -292,52 +293,77 @@ Nesta seção apresentamos alguns resultados interessantes sobre os modelos apre
 \subsection{Regiões da estação com maior circulação de pessoas}
 \label{subsec:metro_heatmap}
 
-Em uma situação real, é pode ser interessante saber quais são as regiões da estação que possuem maior circulação de pessoas
+Em uma situação real, pode ser interessante identificar quais são as regiões da estação que apresentam a maior circulação de pessoas, por exemplo, para evitar que essas áreas sejam obstruídas ou ainda para posicionar e precificar anúncios publicitários.
+
+A figura \ref{fig:heatmap} representa um mapa de calor da estação, indicando as regiões com mair circulação de passageiros. Cada cor indica pessoas caminhando em um determinado sentido, tons mais escuros representam as regiões com maior circulação de passageiros.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[totalheight=7cm]{figures/heatmap.png}
-	\caption{Simulação do fluxo de pessoas em uma estação de metrô}
+	\caption{Mapa de calor das regiões com maior circulação de passageiros.}
 	\label{fig:heatmap}
 \end{figure}
 
-\subsection{Distância percorrida para atravessar a estação}
+Observando a figura \ref{fig:heatmap}, é possível verificar que as pessoas começam a se dispersar após cruzarem a roleta de entrada e voltam a convergir ao se aproximarem das roletas de saída. Este é um comportamento bastante elementar, mas que não foi explicitamente programado na construção do modelo.
+
+\subsection{Tempo e distância percorrida para atravessar a estação}
 \label{subsec:tempo_travessia}
+
+Outra característica importante para ser analisada no modelo de fluxo de passageiros é o tempo médio que as pessoas levam para atravessar a estação. Intuitivamente, podemos supor que quanto maior a circulação de pessoas na estação, a movimentação fica mais restrita e, portanto, maior deve ser o tempo de travessia.
+
+Como os agentes possuem velocidades muito diferentes uns dos outros, o tempo médio de travessia pode ter uma variação muito grande. Portanto, ao invés de contabilizar o tempo total que o agente levou para atravessar a estação, optamos por medir: (1) a distância total percorrida pelo agente, e (2) o número de vezes que o agente foi ativado. O primeiro indicador considera a distância euclidiana entre duas células vizinhas, penalizando os trajetos tortuosos; já a segunda medida, penaliza os casos em que o agente teve a oportunidade de se mover, mas dada as circunstâncias, preferiu continuar na mesma posição.
+
+As figuras \ref{fig:dists_boxplot} e \ref{fig:atvs_boxplot} demonstram como variam a distância percorrida pelos agentes e o número de vezes que eles são ativados em função do fluxo de pessoas nos acessos de entrada e saída. Estes gráficos foram gerados, mantendo o fluxo de passageiros constante por $1000$ passos de tempo para cada simulação. Para facilitar a visualização limitamos o intervalo das ordenadas nas duas figuras, o que ocultou alguns \textit{outliers} mais extremos.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[totalheight=7cm]{figures/dist_boxplot.png}
-	\caption{Simulação do fluxo de pessoas em uma estação de metrô}
-	\label{fig:dist_boxplot}
+	\caption{Distância percorrida em função do fluxo de passageiros.}
+	\label{fig:dists_boxplot}
 \end{figure}
 
-\subsection{Configuração das roletas}
-\label{subsec:direcao_roletas}
+\begin{figure}[H]
+	\centering
+	\includegraphics[totalheight=7cm]{figures/ativs_boxplot.png}
+	\caption{Número de ativações em função do fluxo de passageiros.}
+	\label{fig:atvs_boxplot}
+\end{figure}
+
+Conforme o esperado, os gráficos das figuras \ref{fig:dists_boxplot} e \ref{fig:atvs_boxplot} confirmam que tanto a distância percorrida, quanto o tempo de travessia aumentam à medida que fluxo de passageiros cresce. Um fato interessante é que o aumento das medianas é relativamente lento, mas a variância da distribuição cresce bastante à medida que o fluxo de passageiros aumenta.
 
 \subsection{Esquema tático das equipes}
 \label{subsec:esquema_tatico}
 
+O esquema tático de cada equipe, isto é, a proporção entre número de atacantes e defensores do time são parâmetros da simulação. A tabela \ref{tbl:flag_scoreboard} apresenta o resultado de uma partida de $5000$ passos de tempo para todas combinações possíveis de esquemas táticos entre as duas equipes.
+
+A primeira linha indica o esquema tático da equipe vermelha, enquanto que a primeira coluna indica o esquema tático da equipe azul. Utilizamos cores distintas para facilitar a visualização. A notação \blu{3A$\times$5D} indica que time azul joga com 3 atacantes (\blu{$3A$}) e 5 defensores (\blu{$5D$}) As células representam a pontuação de cada equipe ao final da partida. 
+
 \begin{table}[H]
 	\begin{center}
-		\begin{tabular}{cp{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}p{1.15cm}}
+		\begin{tabular}{cccccccc}
 			\toprule
-			Esquema tático & \red{1A$\times$7D}  & \red{2A$\times$6D}  & \red{3A$\times$4D}  & \red{4A$\times$4D}  & \red{5A$\times$3D}  & \red{6A$\times$3D}  & \red{7A$\times$1D}\\
+			Esquema tático & \red{1A$\times$7D}  & \red{2A$\times$6D}  & \red{3A$\times$5D}  & \red{4A$\times$4D}  & \red{5A$\times$3D}  & \red{6A$\times$2D}  & \red{7A$\times$1D}\\
 			\cmidrule(r){1-8}
-			\blu{1A$\times$7D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
-			\blu{2A$\times$6D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
-			\blu{3A$\times$5D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
-			\blu{4A$\times$4D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
-			\blu{5A$\times$3D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
-			\blu{6A$\times$2D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
-			\blu{7A$\times$1D}    & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} & \score{0}{0} \\
+			\blu{1A$\times$7D}    & \score{10}{10} & \score{11}{18} & \score{09}{26} & \score{11}{27} & \score{15}{25} & \score{15}{29} & \score{09}{15} \\
+			\blu{2A$\times$6D}    & \score{17}{11} & \score{16}{20} & \score{17}{22} & \score{20}{25} & \score{22}{26} & \score{24}{32} & \score{24}{30} \\
+			\blu{3A$\times$5D}    & \score{18}{12} & \score{21}{17} & \score{22}{24} & \score{22}{29} & \score{24}{28} & \score{29}{31} & \score{32}{37} \\
+			\blu{4A$\times$4D}    & \score{22}{13} & \score{24}{20} & \score{23}{22} & \score{26}{29} & \score{30}{34} & \score{28}{32} & \score{32}{35} \\
+			\blu{5A$\times$3D}    & \score{24}{15} & \score{20}{22} & \score{27}{30} & \score{28}{30} & \score{29}{32} & \score{34}{36} & \score{34}{35} \\
+			\blu{6A$\times$2D}    & \score{25}{19} & \score{26}{23} & \score{31}{30} & \score{31}{33} & \score{31}{35} & \score{33}{36} & \score{37}{37} \\
+			\blu{7A$\times$1D}    & \score{13}{13} & \score{27}{28} & \score{29}{30} & \score{33}{35} & \score{35}{38} & \score{33}{39} & \score{35}{37} \\
 
 			\bottomrule
 		\end{tabular}
 		\caption{Representação gráfica dos agentes e seus estados.}
-		\label{tbl:graphics}
+		\label{tbl:flag_scoreboard}
 	\end{center}
 \end{table}
 
+Naturalmente podemos observar que as pontuações das equipes é relativamente baixa quando ambas adotam um esquema tático muito defensivo. Compare, por exemplo, a média das pontuações das equipes nas submatrizes $3\times3$ no canto superior esquerdo (esquemas táticos defensivos) e no canto inferior direito (esquemas táticos ofensivos).
+
+De modo geral, os pontos marcados por uma equipe tende a aumentar quando colocamos mais atacantes. No entanto, uma exceção interessante acontece quando uma equipe está com 7 atacantes e a outra com 7 defensores; nos dois casos simulados, a pontuação marcada pela equipe com 7 atacantes foi bem inferior ao esquema tático com 6 atacantes. Durante a simulação percebemos que isso ocorre pois o número de jogadores (aliados e adversários) cercando a bandeira é muito grande, obstruindo o caminho do jogador que está transportando a bandeira.
+
+Conforme discutimos na seção \ref{sec:agentes} a modelagem baseada em agentes é essencialmente estocástica. Portanto, para obter resultados significativos é importante realizar várias simulações e observar o comportamento médio global do sistema à medida que os parâmetros são modificados. No nosso caso, haviam duas possibilidades de tentar neutralizar o efeito aleatório das simulações: (1) simular um número muito grande de partidas, ou (2) simular uma partida por um tempo muito prolongado. Obviamente, o ideal é combinar as duas abordagens para neutralizar ao máximo as influências aleatórias, entretanto, por restrições de tempo e custo computacional, optamos por seguir a segunda abordagem.
 
 \section{Conclusão}
 \label{sec:conclusao}
@@ -348,11 +374,11 @@ Para ilustrar a utilização desses conceitos, apresentamos dois modelos distint
 
 O primeiro caso envolve um modelo bastante simples em que os passageiros se comportam de forma puramente egoísta. A tomada de decisão dos passageiros resume-se à minimizar uma função de avaliação que considera apenas o custo do movimento e a distância até a saída mais próxima. Apesar da simplicidade do modelo, os resultados em escala macro levaram à um comportamento bastante verissímil; o suficiente, por exemplo, para produzir uma animação para um filme ou jogo de computador.
 
-Por outro lado, o modelo de competição pela bandeira exige que os agentes se comportem seguindo uma estratégia bem mais elaborada. Os jogadores da mesma equipe precisam atuar de forma colaborativa entre si e competitiva com os times da outra equipe. Estes objetivos produzem uma árvore de comportamentos bem diversificada, que inclui ações como: (1) guardar sua própria bandeira, (2) resgatar sua bandeira da posse do adversário, (3) atacar a bandeira adversária, (4) carregar a bandeira do adversário até a área de entrega, ou (5) dar cobertura ao jogador que está carregando a bandeira do adversário. 
+Por outro lado, o modelo de competição pela bandeira exige que os agentes se comportem seguindo uma estratégia bem mais elaborada. Os jogadores da mesma equipe precisam atuar de forma colaborativa entre si e competitiva com os times da outra equipe. Estes objetivos produzem uma diversidade de comportamentos, que inclui ações como: (1) guardar sua própria bandeira, (2) resgatar sua bandeira da posse do adversário, (3) atacar a bandeira adversária, (4) carregar a bandeira do adversário até a área de entrega, ou (5) dar cobertura ao jogador que está carregando a bandeira. 
 
 Uma vez que o jogador decide qual comportamento ele deve tomar, é necessário decidir também para qual direção ele deve se mover (ou em qual direção deve disparar), de forma a atingir os objetivos pretendidos com o comportamento escolhido. Essas decisões são feitas com base em uma análise sobre o estado atual do ambiente e dos agentes, tanto aliados como adversários, o que torna o processo de decisão bastante complexo.
 
-No entanto, ainda é possível aprimorar os modelos propostos em vários aspectos. Algumas propostas de trabalhos futuros incluem: (1) associar grandezas físicas usando dados realistas ao modelo de fluxo de passageiros, considerando, por exemplo, a área média ocupada por uma pessoa, as dimensões da estação, e a velocidade das pessoas; (2) rever as regras gerais do jogo de capturar a bandeira, de tal forma que o resultado das equipes fique mais sensível à escolha de um esquema tático e da estratégia de jogo dos agentes; (3) implementar comportamentos mais elaborados para os jogadores, levando em consideração previsões sobre as ações mais prováveis do adversário, por exemplo, para defender-se de um ataque de forma preventiva e não puramente reativa.
+No entanto, ainda é possível aprimorar os modelos propostos em vários aspectos. Algumas propostas de trabalhos futuros incluem: (1) associar grandezas físicas usando dados realistas ao modelo de fluxo de passageiros, considerando, por exemplo, a área média ocupada por uma pessoa, as dimensões da estação, e a velocidade das pessoas; (2) rever as regras gerais do jogo de capturar a bandeira, de tal forma que o resultado das equipes fique mais sensível à escolha de um esquema tático e da estratégia de jogo dos agentes; (3) implementar uma lógica para que o jogador possa alternar entre atacante e defensor dependendo de sua posição e da situação do jogo; (4) implementar comportamentos mais elaborados para os jogadores, levando em consideração previsões sobre as ações mais prováveis do adversário.
 
 \section*{Referências}
 

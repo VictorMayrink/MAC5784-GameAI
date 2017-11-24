@@ -172,4 +172,4 @@ prod_and_sum(infmap, mask, (1, 1))
     
 def get_inf_value(infmap, position):
     py = infmap.shape[0]-position[1]-1
-    return infmap[py, position[0]]
+    return infmap[py, position[0]] if (0 < py < infmap.shape[0]) and (0 < position[0] < infmap.shape[1]) else 0

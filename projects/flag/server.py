@@ -86,8 +86,8 @@ width = 40
 height = 27
 pixels = 18
 
-blueOffenseSlider = UserSettableParameter("slider", "Blue Attackers", 2, 1, 7, 1)
-redOffenseSlider = UserSettableParameter("slider", "Red Attackers", 2, 1, 7, 1)
+blueOffenseSlider = UserSettableParameter("slider", "Blue Attackers", 4, 1, 7, 1)
+redOffenseSlider = UserSettableParameter("slider", "Red Attackers", 4, 1, 7, 1)
 
 
 grid = CanvasGrid(agent_portrayal, width, height, pixels*width, pixels*height)

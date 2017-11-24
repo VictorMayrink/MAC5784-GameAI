@@ -108,6 +108,7 @@ class Walker(Agent):
         self.model.heatmap[source_number[self.source]][self.model.grid.height-self.pos[1], self.pos[0]] += 1
         self.age = 0
         self.dist = 0
+        self.active = 0
         
         
     def move_on(self):
@@ -129,13 +130,7 @@ class Walker(Agent):
             if next_move != self.pos:
                 self.orientation = (next_move[0]-self.pos[0], next_move[1]-self.pos[1])
                 self.cant_move = 0
-                self.model.influence_map[
-                    self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
-                    self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] -= self.model.influence_mask
                 self.model.grid.move_agent(self, next_move)
-                self.model.influence_map[
-                    self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
-                    self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] += self.model.influence_mask
                 self.dist += numpy.linalg.norm(self.orientation)
             else:
                 self.cant_move += 1
@@ -145,6 +140,7 @@ class Walker(Agent):
     def step(self):
         if random.random() < self.speed:
             if self.unique_id not in self.model.removals:
+                self.active += 1
                 self.move_on()
         self.model.heatmap[source_number[self.source]][self.model.grid.height-self.pos[1], self.pos[0]] += 1
         self.age += 1
@@ -172,9 +168,6 @@ class Entry(Agent):
                 p = Walker(self.model.agent_id, self.model, self.entry_type, walker_init_orient[self.entry_type], self.pos)
                 self.model.schedule.add(p)
                 self.model.agent_id += 1
-                self.model.influence_map[
-                        self.pos[0]:(self.pos[0]+len(self.model.influence_mask)),
-                        self.pos[1]:(self.pos[1]+len(self.model.influence_mask))] += self.model.influence_mask
 
 ##################
 #CLASS: Exit Agent
@@ -199,6 +192,7 @@ class Exit(Agent):
             self.model.removals.append(f.unique_id)
             self.model.walker_ages.append([f.speed, f.age])
             self.model.walker_dists.append([f.speed, f.dist])
+            self.model.walker_atvcounts.append([f.speed, f.active])
 
 ##################
 #CLASS: Wall Agent
@@ -234,16 +228,10 @@ class MetroModel(Model):
         self.moore_neighborhood = True
         self.padding = 2
         self.heatmap = [numpy.zeros((height, width)), numpy.zeros((height, width))]
-        self.influence_mask = numpy.array(
-            [[0, 1, 1, 1, 0],
-             [1, 2, 3, 2, 1],
-             [1, 3, 4, 3, 1],
-             [1, 2, 3, 2, 1],
-             [0, 1, 1, 1, 0]])
-        self.influence_map = numpy.zeros((width+2*self.padding, height+2*self.padding))
         
         self.walker_dists = []
         self.walker_ages = []
+        self.walker_atvcounts = []
         
         #Gates settings
         self.entry_rates = {"left":  self.leftRateSlider.value if isinstance(self.leftRateSlider, UserSettableParameter) else self.leftRateSlider,

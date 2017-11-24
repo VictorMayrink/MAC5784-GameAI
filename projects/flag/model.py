@@ -132,6 +132,8 @@ class Player(Agent):
         self.cover_positions = list(2*numpy.array([(0, 1), (-1, 1), (-1, 0), (-1, -1), (0, -1), (1, 0), (1, -1), (1, 1)], dtype = numpy.uint8))
         self.model.grid.place_agent(self, position)
         self.model.playermap = im.sum_inf_mask(self.model.playermap, im.player_inf_mask, self.pos)
+        self.fireload = 0
+        self.immune = 0
 
     #------------------------->
     #Move to the next position>
@@ -143,6 +145,10 @@ class Player(Agent):
         if self.flag: self.model.grid.move_agent(self.flag, self.pos)
     #Move to the next position<
     #-------------------------<
+
+    def find_nearest_enemy(self):
+        distances = numpy.array([manhattan_dist(self.pos, enemy.pos) for enemy in self.model.team_players[(self.team + 1) % 2]])
+        return(self.model.team_players[(self.team + 1) % 2][distances.argmin()])
 
     #-------------------->
     #Attack Flag Behavior>
@@ -165,7 +171,7 @@ class Player(Agent):
             
     def cover(self, player_with_enemy_flag):
         pmoves = possible_moves(self, self.pos)
-        distances = numpy.array([manhattan_dist(player_with_enemy_flag.pos, pm) for pm in pmoves])       
+        distances = numpy.array([manhattan_dist(player_with_enemy_flag.pos, pm) + im.get_inf_value(self.model.firemap, (pm[0]-1, pm[1]-1)) for pm in pmoves])
         new_position = pmoves[distances.argmin()]
         self.move(new_position)
 
@@ -176,9 +182,17 @@ class Player(Agent):
             if self.flag:
                 self.deliver_flag()
             else:
-                self.cover(player_with_enemy_flag)
+                nearest_enemy = self.find_nearest_enemy()
+                if self.hit_chance(nearest_enemy) > self.model.firehitchance and self.fireload > self.model.fireloadtime:
+                    self.shoot_at_target(nearest_enemy)
+                else:
+                    self.cover(player_with_enemy_flag)
         else:
-            self.capture_flag()
+            nearest_enemy = self.find_nearest_enemy()
+            if self.hit_chance(nearest_enemy) > self.model.firehitchance and self.fireload > self.model.fireloadtime:
+                self.shoot_at_target(nearest_enemy)
+            else:
+                self.capture_flag()
     #Attack Flag Behavior<
     #--------------------<
     
@@ -189,8 +203,8 @@ class Player(Agent):
     #Should fire function<        
     #--------------------<
     
-    def shoot_at_flag(self):
-        target_vec = numpy.subtract(self.model.team_flag[self.team].pos, self.pos)
+    def shoot_at_target(self, target):
+        target_vec = numpy.subtract(target.pos, self.pos)
         inner_prod = numpy.inner(target_vec, self.model.neighborhood_norm)
         self.orientation = self.model.neighborhood[inner_prod.argmax()]
         self.fire()     
@@ -201,12 +215,13 @@ class Player(Agent):
         fs = FireShot(self.model.agent_id, self.model, self.orientation, self.pos)
         self.model.schedule.add(fs)
         self.model.agent_id += 1
+        self.fireload = 0
     #Fire Behavior<
     #-------------<
 
     #-------------------->
     #Defend Flag Behavior>
-    def patrol_flag(self):    
+    def patrol_flag(self):
         patrol_contour_position = tuple(numpy.subtract(self.pos, self.model.team_flag[self.team].pos))
         patrol_contour_position = pt.patrol_positions[patrol_contour_position]
         delta = pt.patrol_contour[patrol_contour_position+1] if patrol_contour_position < 15 else pt.patrol_contour[0]
@@ -215,15 +230,14 @@ class Player(Agent):
         neighbors = [neighbor for neighbor in self.model.grid.get_cell_list_contents(new_position) if not isinstance(neighbor, Delivery)]
         if not neighbors: self.move(new_position)
     
-    def hit_chance(self):
+    def hit_chance(self, target):
         mat1 = numpy.zeros(self.model.playermap.shape)
         mat2 = numpy.zeros(self.model.playermap.shape)
-        target_vec = numpy.subtract(self.model.team_flag[self.team].pos, self.pos)
+        target_vec = numpy.subtract(target.pos, self.pos)
         inner_prod = numpy.inner(target_vec, self.model.neighborhood_norm)
         shot_orientation = self.model.neighborhood[inner_prod.argmax()]
         mat1 = im.sum_inf_mask(mat1, im.fs_inf_mask[shot_orientation], (self.pos[0]+shot_orientation[0], self.pos[1]+shot_orientation[1]))
-        opponent = self.model.team_flag[self.team].player
-        mat2 = im.sum_inf_mask(mat2, im.player_inf_mask, opponent.pos)
+        mat2 = im.sum_inf_mask(mat2, im.player_inf_mask, target.pos)
         for ally in self.model.team_players[self.team]:
             mat2 = im.sum_inf_mask(mat2, -im.player_inf_mask, ally.pos)
         return(numpy.sum(numpy.multiply(mat1, mat2)))
@@ -233,29 +247,34 @@ class Player(Agent):
         patrol_cells = numpy.add(self.model.team_flag[self.team].pos, pt.patrol_contour)
         distances = numpy.zeros(len(pmoves))        
         for index, pm in enumerate(pmoves):
-            distances[index] = numpy.array([manhattan_dist(pc, pm) for pc in patrol_cells]).min()
+            distances[index] = numpy.array([manhattan_dist(pc, pm) + im.get_inf_value(self.model.firemap, (pc[0]-1, pc[1]-1)) for pc in patrol_cells]).min()
             if pm == self.pos: distances[index] += 1        
         new_position = pmoves[distances.argmin()]
         if (new_position != self.pos): self.move(new_position)
             
     def defend_flag(self):
         
-        if self.model.team_flag[self.team].player:
-            if self.hit_chance() > 30:
-                self.shoot_at_flag()
+        nearest_enemy = self.find_nearest_enemy()
+        if self.hit_chance(nearest_enemy) > self.model.firehitchance and self.fireload > self.model.fireloadtime:
+            self.shoot_at_target(nearest_enemy)
+        else:
+            enemy_with_flag = self.model.team_flag[self.team].player
+            if enemy_with_flag:
+                self.go_to_flag()
+            elif chebyshev_dist(self.pos, self.model.team_flag[self.team].pos) == 2:
+                self.patrol_flag()
             else:
                 self.go_to_flag()
-        elif chebyshev_dist(self.pos, self.model.team_flag[self.team].pos) == 2:
-            self.patrol_flag()
-        else:
-            self.go_to_flag()
     #Defend Flag Behavior<       
     #--------------------<
     
     def step(self):
+        self.fireload += 1
         if self.lock_countdown > 0:
             self.lock_countdown -= 1
-        elif random.random() < self.speed:
+            if self.lock_countdown == 0: self.immune = self.model.immunetime
+        elif random.random() < (self.speed - 0.1*(self.flag != None)):
+            self.immune -= 1
             if self.action == "attack_flag":
                 self.attack_flag()
             else:
@@ -322,16 +341,16 @@ class FireShot(Agent):
                 for agent in next_cell_contents:
                     if isinstance(agent, Wall):
                         self.crash()
-                    elif isinstance(agent, Player):
+                    elif isinstance(agent, Player) and agent.immune < 0:
                         self.crash()
-                        agent.lock_countdown = 4
+                        agent.lock_countdown = self.model.stoptime
                         if agent.flag:
                             agent.flag.player = None
                             self.model.grid.move_agent(agent.flag, (agent.pos[0] - agent.orientation[0], agent.pos[1] - agent.orientation[1]))
                             agent.flag = None
                         
                 #Remove fireshot after a long travelled distance
-                if self.travelled_dist > 100:
+                if self.travelled_dist > 15:
                     self.model.grid._remove_agent(self.pos, self)
                     self.model.schedule.remove(self)
                     self.model.removals.append(self.unique_id)
@@ -377,6 +396,10 @@ class CaptureFlag(Model):
         self.moore_neighborhood = True
         self.removals = []
         self.padding = 2*10
+        self.fireloadtime = 5
+        self.firehitchance = 30
+        self.immunetime = 5
+        self.stoptime = 8
         
         self.schedule = RandomActivation(self)
         self.running = True
