@@ -19,6 +19,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{array}
+\usepackage{mathtools}
 \usepackage[numbers]{natbib}
 
 
@@ -188,11 +189,37 @@ As roletas podem ser \textit{bidirecionais} ou \textit{unidirecionais}. Roletas 
 
 A cada passo da simulação, cada \textit{passageiro} $p$ tem uma probabilidade $\sigma_p$ de lhe ser concedida a oportunidade de se mover. Conforme sugere a notação, esta probabilidade varia de indivíduo para indivíduo, o que permite criar \textit{passageiros} que se movem com mais frequência que outros. Portanto, o atributo $sigma_p$, associado ao passageiro $p$ representa a velocidade com que esse passageiro se movimenta. Esse atributo é sorteado no momento em que o agente é criado pela roleta e permanece constante durante toda a simulação.
 
-Quando um agente do tipo \textit{passageiro} tem a oportunidade de se mover ele precisa decidir qual movimento deseja realizar. Esta decisão é implementada seguindo uma estratégia bastante simples: o passageiro verifica quais são todos os movimentos possíveis e então move-se para a célula que minimiza uma \textit{função de avaliação estática} (\cite{millington2016artificial}, cap. 8) predefinida.
+Quando um agente do tipo \textit{passageiro} tem a oportunidade de se mover ele precisa decidir qual movimento deseja realizar. Esta decisão é implementada seguindo uma estratégia bastante simples: o passageiro verifica quais são todos os movimentos $m_{xy}$ possíveis e então move-se para a célula que minimiza uma \textit{função de avaliação estática} (\cite{millington2016artificial}, cap. 8) predefinida.
 
 A função de avaliação utilizada é composta pela soma de duas componentes: $i)$ o custo do movimento, e $ii)$ a distância da nova posição até a roleta de saída mais próxima.
 
-O custo do movimento é calculado da usando a seguinte convenção: movimentos ortogonais têm custo unitário, enquanto que os deslocamentos na diagonal têm custo de $\sqrt{2}$. Esta estratégia evita que os passageiros fiquem fazendo movimentos diagonais e trocando de direção com muita frequência, o que causaria um comportamento anormal de zigue-zague.
+\begin{equation}
+f(m_{xy}) = c(m_{xy}) + min\Big(dist\big((x, y), (px_i, py_i)|_{i=gates}\big)\Big)
+\label{eq:fae}
+\end{equation}
+
+Onde $f(m_{xy})$ é a função de avaliação estática para o movimento $m_{x, y}$; $c(m_{xy})$ é o custo do movimento $m_{x, y}$; e $dist((x, y), (px, py))$ representa a distância até do ponto $(x, y)$ o portão localizado em $(px, py)$.
+
+O custo do movimento é calculado usando a seguinte convenção: movimentos ortogonais têm custo unitário, enquanto que os deslocamentos na diagonal têm custo de $\sqrt{2}$. Esta estratégia evita que os passageiros fiquem fazendo movimentos diagonais e trocando de direção com muita frequência, o que causaria um comportamento anormal de zigue-zague.
+
+\begin{equation}
+c(m_{xy})= 
+\begin{dcases}
+	1,			& \text{para movimento ortogonal}\\
+	\sqrt{2},   & \text{para movimento diagonal}
+\end{dcases}
+\end{equation}
+
+
+A distância da nova posição até a saída mais próxima foi calculada segundo a \textit{distância octal} \cite{amit2017pathfind}, dada pela fórmula:
+
+\begin{equation}
+dist((x, y), (px, py)) = D_1\times(dx + dy) + (D_2 - 2D_1)\times min(dx, dy)
+\end{equation}
+
+Onde $dx = |x - px|$ e $dy = |y - py|$; e $D_1 = 1$ e $D_2 = \sqrt{2}$.
+
+Portanto, função de avaliação estática expressa em \ref{eq:fae} leva em consideração unicamente o objetivo individual de cada passageiro, o que tende a produzir agentes com comportamentos puramente egoístas. No entanto, conforme discutiremos nas seções \ref{sec:resultados} e \ref{sec:conclusao}, esta implementação foi suficiente para produzir um comportamento verossímil.
 
 \section{Competição de capturar a bandeira}
 \label{sec:sim2}
@@ -314,7 +341,7 @@ Cada equipe possui 8 jogadores que podem assumir uma postura ofensiva (atacante)
 
 \begin{figure}
 	\centering
-	\includegraphics[height=11.5cm]{figures/flag-tree.png}
+	\includegraphics[height=15cm]{figures/flag-tree.png}
 	\caption{Árvore de decisão dos \textit{jogadores}.}
 	\label{fig:flag-decision-tree}
 \end{figure}

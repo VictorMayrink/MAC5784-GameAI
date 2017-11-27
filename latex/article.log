@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.14)  27 NOV 2017 10:44
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2017.11.14)  27 NOV 2017 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -792,6 +792,39 @@ Package: array 2014/10/28 v2.4c Tabular extension package (FMi)
 \extratabsurround=\skip50
 \backup@length=\skip51
 )
+(/usr/share/texlive/texmf-dist/tex/latex/mathtools/mathtools.sty
+Package: mathtools 2015/11/12 v1.18 mathematical typesetting tools
+
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count134
+\calc@Bcount=\count135
+\calc@Adimen=\dimen158
+\calc@Bdimen=\dimen159
+\calc@Askip=\skip52
+\calc@Bskip=\skip53
+LaTeX Info: Redefining \setlength on input line 80.
+LaTeX Info: Redefining \addtolength on input line 81.
+\calc@Ccount=\count136
+\calc@Cskip=\skip54
+)
+(/usr/share/texlive/texmf-dist/tex/latex/mathtools/mhsetup.sty
+Package: mhsetup 2010/01/21 v1.2a programming setup (MH)
+)
+LaTeX Info: Thecontrolsequence`\('isalreadyrobust on input line 129.
+LaTeX Info: Thecontrolsequence`\)'isalreadyrobust on input line 129.
+LaTeX Info: Thecontrolsequence`\['isalreadyrobust on input line 129.
+LaTeX Info: Thecontrolsequence`\]'isalreadyrobust on input line 129.
+\g_MT_multlinerow_int=\count137
+\l_MT_multwidth_dim=\dimen160
+\origjot=\skip55
+\l_MT_shortvdotswithinadjustabove_dim=\dimen161
+\l_MT_shortvdotswithinadjustbelow_dim=\dimen162
+\l_MT_above_intertext_sep=\dimen163
+\l_MT_below_intertext_sep=\dimen164
+\l_MT_above_shortintertext_sep=\dimen165
+\l_MT_below_shortintertext_sep=\dimen166
+)
 (/usr/share/texlive/texmf-dist/tex/latex/todonotes/todonotes.sty
 Package: todonotes 2015/07/09 .dtx Todonotes source and documentation.
 Package: todonotes 2012/07/25
@@ -807,7 +840,7 @@ Package: xkeyval 2014/12/03 v2.7a package option processing (HA)
 \XKV@toks=\toks30
 \XKV@tempa@toks=\toks31
 )
-\XKV@depth=\count134
+\XKV@depth=\count138
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
@@ -815,8 +848,8 @@ File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/utilities/pgfrcs.sty
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common.tex
 \pgfutil@everybye=\toks32
-\pgfutil@tempdima=\dimen158
-\pgfutil@tempdimb=\dimen159
+\pgfutil@tempdima=\dimen167
+\pgfutil@tempdimb=\dimen168
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-common-lists.t
 ex)) (/usr/share/texlive/texmf-dist/tex/generic/pgf/utilities/pgfutil-latex.def
@@ -842,20 +875,20 @@ Package: pgfsys 2014/07/09 v3.0.1a (rcs-revision 1.48)
 ex
 \pgfkeys@tmptoks=\toks35
 ))
-\pgf@x=\dimen160
-\pgf@y=\dimen161
-\pgf@xa=\dimen162
-\pgf@ya=\dimen163
-\pgf@xb=\dimen164
-\pgf@yb=\dimen165
-\pgf@xc=\dimen166
-\pgf@yc=\dimen167
+\pgf@x=\dimen169
+\pgf@y=\dimen170
+\pgf@xa=\dimen171
+\pgf@ya=\dimen172
+\pgf@xb=\dimen173
+\pgf@yb=\dimen174
+\pgf@xc=\dimen175
+\pgf@yc=\dimen176
 \w@pgf@writea=\write4
 \r@pgf@reada=\read1
-\c@pgf@counta=\count135
-\c@pgf@countb=\count136
-\c@pgf@countc=\count137
-\c@pgf@countd=\count138
+\c@pgf@counta=\count139
+\c@pgf@countb=\count140
+\c@pgf@countc=\count141
+\c@pgf@countd=\count142
 \t@pgf@toka=\toks36
 \t@pgf@tokb=\toks37
 \t@pgf@tokc=\toks38
@@ -874,8 +907,8 @@ File: pgfsys-common-pdf.def 2013/10/10  (rcs-revision 1.13)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.
 tex
 File: pgfsyssoftpath.code.tex 2013/09/09  (rcs-revision 1.9)
-\pgfsyssoftpath@smallbuffer@items=\count139
-\pgfsyssoftpath@bigbuffer@items=\count140
+\pgfsyssoftpath@smallbuffer@items=\count143
+\pgfsyssoftpath@bigbuffer@items=\count144
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/systemlayer/pgfsysprotocol.code.
 tex
@@ -888,8 +921,8 @@ Package: pgfcore 2010/04/11 v3.0.1a (rcs-revision 1.7)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathcalc.code.tex
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathutil.code.tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathparser.code.tex
-\pgfmath@dimen=\dimen168
-\pgfmath@count=\count141
+\pgfmath@dimen=\dimen177
+\pgfmath@count=\count145
 \pgfmath@box=\box38
 \pgfmath@toks=\toks39
 \pgfmath@stack@operand=\toks40
@@ -913,37 +946,37 @@ tex)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfunctions.integerari
 thmetics.code.tex)))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmathfloat.code.tex
-\c@pgfmathroundto@lastzeros=\count142
+\c@pgfmathroundto@lastzeros=\count146
 ))
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepoints.code.te
 x
 File: pgfcorepoints.code.tex 2013/10/07  (rcs-revision 1.27)
-\pgf@picminx=\dimen169
-\pgf@picmaxx=\dimen170
-\pgf@picminy=\dimen171
-\pgf@picmaxy=\dimen172
-\pgf@pathminx=\dimen173
-\pgf@pathmaxx=\dimen174
-\pgf@pathminy=\dimen175
-\pgf@pathmaxy=\dimen176
-\pgf@xx=\dimen177
-\pgf@xy=\dimen178
-\pgf@yx=\dimen179
-\pgf@yy=\dimen180
-\pgf@zx=\dimen181
-\pgf@zy=\dimen182
+\pgf@picminx=\dimen178
+\pgf@picmaxx=\dimen179
+\pgf@picminy=\dimen180
+\pgf@picmaxy=\dimen181
+\pgf@pathminx=\dimen182
+\pgf@pathmaxx=\dimen183
+\pgf@pathminy=\dimen184
+\pgf@pathmaxy=\dimen185
+\pgf@xx=\dimen186
+\pgf@xy=\dimen187
+\pgf@yx=\dimen188
+\pgf@yy=\dimen189
+\pgf@zx=\dimen190
+\pgf@zy=\dimen191
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathconstruct.
 code.tex
 File: pgfcorepathconstruct.code.tex 2013/10/07  (rcs-revision 1.29)
-\pgf@path@lastx=\dimen183
-\pgf@path@lasty=\dimen184
+\pgf@path@lastx=\dimen192
+\pgf@path@lasty=\dimen193
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorepathusage.code
 .tex
 File: pgfcorepathusage.code.tex 2014/11/02  (rcs-revision 1.24)
-\pgf@shorten@end@additional=\dimen185
-\pgf@shorten@start@additional=\dimen186
+\pgf@shorten@end@additional=\dimen194
+\pgf@shorten@start@additional=\dimen195
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorescopes.code.te
 x
@@ -951,19 +984,19 @@ File: pgfcorescopes.code.tex 2015/05/08  (rcs-revision 1.46)
 \pgfpic=\box39
 \pgf@hbox=\box40
 \pgf@layerbox@main=\box41
-\pgf@picture@serial@count=\count143
+\pgf@picture@serial@count=\count147
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoregraphicstate.c
 ode.tex
 File: pgfcoregraphicstate.code.tex 2014/11/02  (rcs-revision 1.12)
-\pgflinewidth=\dimen187
+\pgflinewidth=\dimen196
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoretransformation
 s.code.tex
 File: pgfcoretransformations.code.tex 2015/08/07  (rcs-revision 1.20)
-\pgf@pt@x=\dimen188
-\pgf@pt@y=\dimen189
-\pgf@pt@temp=\dimen190
+\pgf@pt@x=\dimen197
+\pgf@pt@y=\dimen198
+\pgf@pt@temp=\dimen199
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
 File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
@@ -979,12 +1012,12 @@ File: pgfcorepathprocessing.code.tex 2013/09/09  (rcs-revision 1.9)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcorearrows.code.te
 x
 File: pgfcorearrows.code.tex 2015/05/14  (rcs-revision 1.43)
-\pgfarrowsep=\dimen191
+\pgfarrowsep=\dimen256
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
 File: pgfcoreshade.code.tex 2013/07/15  (rcs-revision 1.15)
-\pgf@max=\dimen192
-\pgf@sys@shading@range@num=\count144
+\pgf@max=\dimen257
+\pgf@sys@shading@range@num=\count148
 )
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
 File: pgfcoreimage.code.tex 2013/07/15  (rcs-revision 1.18)
@@ -1015,8 +1048,8 @@ File: pgfmoduleplot.code.tex 2015/08/03  (rcs-revision 1.13)
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-0-65
 .sty
 Package: pgfcomp-version-0-65 2007/07/03 v3.0.1a (rcs-revision 1.7)
-\pgf@nodesepstart=\dimen193
-\pgf@nodesepend=\dimen194
+\pgf@nodesepstart=\dimen258
+\pgf@nodesepend=\dimen259
 )
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/compatibility/pgfcomp-version-1-18
 .sty
@@ -1030,8 +1063,8 @@ Package: pgfcomp-version-1-18 2007/07/23 v3.0.1a (rcs-revision 1.1)
 Package: pgffor 2013/12/13 v3.0.1a (rcs-revision 1.25)
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/math/pgfmath.code.tex)
-\pgffor@iter=\dimen195
-\pgffor@skip=\dimen196
+\pgffor@iter=\dimen260
+\pgffor@skip=\dimen261
 \pgffor@stack=\toks42
 \pgffor@toks=\toks43
 ))
@@ -1041,31 +1074,31 @@ Package: tikz 2015/08/07 v3.0.1a (rcs-revision 1.151)
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers
 .code.tex
 File: pgflibraryplothandlers.code.tex 2013/08/31 v3.0.1a (rcs-revision 1.20)
-\pgf@plot@mark@count=\count145
-\pgfplotmarksize=\dimen197
+\pgf@plot@mark@count=\count149
+\pgfplotmarksize=\dimen262
 )
-\tikz@lastx=\dimen198
-\tikz@lasty=\dimen199
-\tikz@lastxsaved=\dimen256
-\tikz@lastysaved=\dimen257
-\tikzleveldistance=\dimen258
-\tikzsiblingdistance=\dimen259
+\tikz@lastx=\dimen263
+\tikz@lasty=\dimen264
+\tikz@lastxsaved=\dimen265
+\tikz@lastysaved=\dimen266
+\tikzleveldistance=\dimen267
+\tikzsiblingdistance=\dimen268
 \tikz@figbox=\box44
 \tikz@figbox@bg=\box45
 \tikz@tempbox=\box46
 \tikz@tempbox@bg=\box47
-\tikztreelevel=\count146
-\tikznumberofchildren=\count147
-\tikznumberofcurrentchild=\count148
-\tikz@fig@count=\count149
+\tikztreelevel=\count150
+\tikznumberofchildren=\count151
+\tikznumberofcurrentchild=\count152
+\tikz@fig@count=\count153
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/modules/pgfmodulematrix.code.tex
 File: pgfmodulematrix.code.tex 2013/09/17  (rcs-revision 1.8)
-\pgfmatrixcurrentrow=\count150
-\pgfmatrixcurrentcolumn=\count151
-\pgf@matrix@numberofcolumns=\count152
+\pgfmatrixcurrentrow=\count154
+\pgfmatrixcurrentcolumn=\count155
+\pgf@matrix@numberofcolumns=\count156
 )
-\tikz@expandcount=\count153
+\tikz@expandcount=\count157
 
 (/usr/share/texlive/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tik
 zlibrarytopaths.code.tex
@@ -1075,20 +1108,7 @@ File: tikzlibrarytopaths.code.tex 2008/06/17 v3.0.1a (rcs-revision 1.2)
 zlibrarypositioning.code.tex
 File: tikzlibrarypositioning.code.tex 2008/10/06 v3.0.1a (rcs-revision 1.7)
 )
-(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
-Package: calc 2014/10/28 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count154
-\calc@Bcount=\count155
-\calc@Adimen=\dimen260
-\calc@Bdimen=\dimen261
-\calc@Askip=\skip52
-\calc@Bskip=\skip53
-LaTeX Info: Redefining \setlength on input line 80.
-LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count156
-\calc@Cskip=\skip54
-)
-\c@@todonotes@numberoftodonotes=\count157
+\c@@todonotes@numberoftodonotes=\count158
 )
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2012/11/06 v6.83m Hypertext links for LaTeX
@@ -1142,16 +1162,16 @@ Package: auxhook 2011/03/04 v1.3 Hooks for auxiliary files (HO)
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
 Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
 )
-\@linkdim=\dimen262
-\Hy@linkcounter=\count158
-\Hy@pagecounter=\count159
+\@linkdim=\dimen269
+\Hy@linkcounter=\count159
+\Hy@pagecounter=\count160
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
 File: pd1enc.def 2012/11/06 v6.83m Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 )
-\Hy@SavedSpaceFactor=\count160
+\Hy@SavedSpaceFactor=\count161
 
 (/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
 File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
@@ -1164,17 +1184,17 @@ Package hyperref Info: Plain pages OFF on input line 4458.
 Package hyperref Info: Backreferencing OFF on input line 4463.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
 Package hyperref Info: Bookmarks ON on input line 4688.
-\c@Hy@tempcnt=\count161
+\c@Hy@tempcnt=\count162
 
 (/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
 \Urlmuskip=\muskip11
 Package: url 2013/09/16  ver 3.4  Verb mode for urls, etc.
 )
 LaTeX Info: Redefining \url on input line 5041.
-\XeTeXLinkMargin=\dimen263
-\Fld@menulength=\count162
-\Field@Width=\dimen264
-\Fld@charsize=\dimen265
+\XeTeXLinkMargin=\dimen270
+\Fld@menulength=\count163
+\Field@Width=\dimen271
+\Fld@charsize=\dimen272
 Package hyperref Info: Hyper figures OFF on input line 6295.
 Package hyperref Info: Link nesting OFF on input line 6300.
 Package hyperref Info: Hyper index ON on input line 6303.
@@ -1184,73 +1204,73 @@ Package hyperref Info: Link coloring with OCG OFF on input line 6320.
 Package hyperref Info: PDF/A mode OFF on input line 6325.
 LaTeX Info: Redefining \ref on input line 6365.
 LaTeX Info: Redefining \pageref on input line 6369.
-\Hy@abspage=\count163
-\c@Item=\count164
-\c@Hfootnote=\count165
+\Hy@abspage=\count164
+\c@Item=\count165
+\c@Hfootnote=\count166
 )
 
 Package hyperref Message: Driver (autodetected): hpdftex.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
 File: hpdftex.def 2012/11/06 v6.83m Hyperref driver for pdfTeX
-\Fld@listcount=\count166
-\c@bookmark@seq@number=\count167
+\Fld@listcount=\count167
+\c@bookmark@seq@number=\count168
 
 (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
 Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 82.
 )
-\Hy@SectionHShift=\skip55
+\Hy@SectionHShift=\skip56
 )
 (/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
-\bigstrutjot=\dimen266
+\bigstrutjot=\dimen273
 )
 (/usr/share/texlive/texmf-dist/tex/latex/makecell/makecell.sty
 Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
-\rotheadsize=\dimen267
-\c@nlinenum=\count168
+\rotheadsize=\dimen274
+\c@nlinenum=\count169
 \TeXr@lab=\toks44
 )
 (/usr/share/texlive/texmf-dist/tex/latex/etoolbox/etoolbox.sty
 Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
-\etb@tempcnta=\count169
+\etb@tempcnta=\count170
 ) (./article.aux)
 \openout1 = `article.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 66.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 66.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 67.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 67.
 (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 66.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 66.
-LaTeX Font Info:    ... okay on input line 66.
+LaTeX Font Info:    ... okay on input line 67.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 67.
+LaTeX Font Info:    ... okay on input line 67.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count170
-\scratchdimen=\dimen268
+\scratchcounter=\count171
+\scratchdimen=\dimen275
 \scratchbox=\box48
-\nofMPsegments=\count171
-\nofMParguments=\count172
+\nofMPsegments=\count172
+\nofMParguments=\count173
 \everyMPshowfont=\toks45
-\MPscratchCnt=\count173
-\MPscratchDim=\dimen269
-\MPnumerator=\count174
-\makeMPintoPDFobject=\count175
+\MPscratchCnt=\count174
+\MPscratchDim=\dimen276
+\MPnumerator=\count175
+\makeMPintoPDFobject=\count176
 \everyMPtoPDFconversion=\toks46
 ) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
 Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
@@ -1306,10 +1326,10 @@ Package caption Info: float package is loaded.
 Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-\c@lstlisting=\count176
+\c@lstlisting=\count177
 ABD: EveryShipout initializing macros
 \AtBeginShipoutBox=\box49
-Package hyperref Info: Link coloring ON on input line 66.
+Package hyperref Info: Link coloring ON on input line 67.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
@@ -1317,274 +1337,271 @@ Package: nameref 2012/10/27 v2.43 Cross-referencing by name of section
 (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
 Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
 )
-\c@section@level=\count177
+\c@section@level=\count178
 )
-LaTeX Info: Redefining \ref on input line 66.
-LaTeX Info: Redefining \pageref on input line 66.
-LaTeX Info: Redefining \nameref on input line 66.
+LaTeX Info: Redefining \ref on input line 67.
+LaTeX Info: Redefining \pageref on input line 67.
+LaTeX Info: Redefining \nameref on input line 67.
 
 (./article.out) (./article.out)
 \@outlinefile=\write5
 \openout5 = `article.out'.
 
-LaTeX Font Info:    Try loading font information for U+msa on input line 77.
+LaTeX Font Info:    Try loading font information for U+msa on input line 78.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 77.
+LaTeX Font Info:    Try loading font information for U+msb on input line 78.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 78.
+(babel)             in language  on input line 79.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 91.
+(babel)             in language  on input line 92.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 91.
+(babel)             in language  on input line 92.
  [1
 
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 101.
+(babel)             in language  on input line 102.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 114.
+(babel)             in language  on input line 115.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 114.
+(babel)             in language  on input line 115.
  [2]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 116.
+(babel)             in language  on input line 117.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 135.
+(babel)             in language  on input line 136.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 147.
+(babel)             in language  on input line 148.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 147.
+(babel)             in language  on input line 148.
  [3]
-Overfull \hbox (6.0562pt too wide) in paragraph at lines 160--161
+Overfull \hbox (6.0562pt too wide) in paragraph at lines 161--162
 []\OT1/cmr/m/n/12 Os mo-de-los de-sen-vol-vi-dos neste tra-ba-lho fo-ram de-sen
 -vol-vi-dos na lin-gua-gem \OT1/cmr/m/it/12 python
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 162.
+(babel)             in language  on input line 163.
 <figures/metro.png, id=93, 769.87625pt x 513.92pt>
 File: figures/metro.png Graphic file (type png)
  <use figures/metro.png>
-Package pdftex.def Info: figures/metro.png used on input line 169.
+Package pdftex.def Info: figures/metro.png used on input line 170.
 (pdftex.def)             Requested size: 213.12042pt x 142.26378pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 184.
+(babel)             in language  on input line 185.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 184.
+(babel)             in language  on input line 185.
 
 [4]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 196.
+(babel)             in language  on input line 202.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 196.
+(babel)             in language  on input line 202.
  [5 <./figures/metro.png>]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 197.
+(babel)             in language  on input line 224.
 
-<figures/flag-ini.png, id=115, 721.69624pt x 488.82625pt>
+<figures/flag-ini.png, id=122, 721.69624pt x 488.82625pt>
 File: figures/flag-ini.png Graphic file (type png)
 
 <use figures/flag-ini.png>
-Package pdftex.def Info: figures/flag-ini.png used on input line 204.
+Package pdftex.def Info: figures/flag-ini.png used on input line 231.
 (pdftex.def)             Requested size: 210.03537pt x 142.26378pt.
- <figures/player.png, id=117, 57.21375pt x 56.21pt>
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 243.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 243.
+ [6 <./figures/flag-ini.png>]
+<figures/player.png, id=132, 57.21375pt x 56.21pt>
 File: figures/player.png Graphic file (type png)
-
-<use figures/player.png>
-Package pdftex.def Info: figures/player.png used on input line 229.
+ <use figures/player.png>
+Package pdftex.def Info: figures/player.png used on input line 256.
 (pdftex.def)             Requested size: 14.2257pt x 14.22656pt.
- <figures/flag.png, id=118, 58.2175pt x 58.2175pt>
-File: figures/flag.png Graphic file (type png)
 
-<use figures/flag.png>
-Package pdftex.def Info: figures/flag.png used on input line 233.
+<figures/flag.png, id=133, 58.2175pt x 58.2175pt>
+File: figures/flag.png Graphic file (type png)
+ <use figures/flag.png>
+Package pdftex.def Info: figures/flag.png used on input line 260.
 (pdftex.def)             Requested size: 14.22565pt x 14.22565pt.
- <figures/delivery.png, id=119, 56.21pt x 57.21375pt>
+
+<figures/delivery.png, id=134, 56.21pt x 57.21375pt>
 File: figures/delivery.png Graphic file (type png)
 
 <use figures/delivery.png>
-Package pdftex.def Info: figures/delivery.png used on input line 237.
+Package pdftex.def Info: figures/delivery.png used on input line 264.
 (pdftex.def)             Requested size: 14.22656pt x 14.2257pt.
 
-<figures/fireshot.png, id=120, 58.2175pt x 54.2025pt>
+<figures/fireshot.png, id=135, 58.2175pt x 54.2025pt>
 File: figures/fireshot.png Graphic file (type png)
 
 <use figures/fireshot.png>
-Package pdftex.def Info: figures/fireshot.png used on input line 241.
+Package pdftex.def Info: figures/fireshot.png used on input line 268.
 (pdftex.def)             Requested size: 14.22565pt x 14.22629pt.
- <figures/wall.png, id=121, 53.19875pt x 55.20625pt>
+ <figures/wall.png, id=136, 53.19875pt x 55.20625pt>
 File: figures/wall.png Graphic file (type png)
 
 <use figures/wall.png>
-Package pdftex.def Info: figures/wall.png used on input line 245.
+Package pdftex.def Info: figures/wall.png used on input line 272.
 (pdftex.def)             Requested size: 14.22585pt x 14.22607pt.
 
-<figures/player_with_flag.png, id=122, 61.22874pt x 57.21375pt>
+<figures/player_with_flag.png, id=137, 61.22874pt x 57.21375pt>
 File: figures/player_with_flag.png Graphic file (type png)
 
 <use figures/player_with_flag.png>
-Package pdftex.def Info: figures/player_with_flag.png used on input line 249.
+Package pdftex.def Info: figures/player_with_flag.png used on input line 276.
 (pdftex.def)             Requested size: 14.22618pt x 14.2257pt.
 
-<figures/fired_player_3.png, id=123, 59.22125pt x 56.21pt>
+<figures/fired_player_3.png, id=138, 59.22125pt x 56.21pt>
 File: figures/fired_player_3.png Graphic file (type png)
 
 <use figures/fired_player_3.png>
-Package pdftex.def Info: figures/fired_player_3.png used on input line 253.
+Package pdftex.def Info: figures/fired_player_3.png used on input line 280.
 (pdftex.def)             Requested size: 14.22603pt x 14.22656pt.
 
-<figures/player_stopped.png, id=124, 58.2175pt x 57.21375pt>
+<figures/player_stopped.png, id=139, 58.2175pt x 57.21375pt>
 File: figures/player_stopped.png Graphic file (type png)
 
 <use figures/player_stopped.png>
-Package pdftex.def Info: figures/player_stopped.png used on input line 257.
+Package pdftex.def Info: figures/player_stopped.png used on input line 284.
 (pdftex.def)             Requested size: 14.22565pt x 14.2257pt.
 
-<figures/fired_wall.png, id=125, 55.20625pt x 55.20625pt>
+<figures/fired_wall.png, id=140, 55.20625pt x 55.20625pt>
 File: figures/fired_wall.png Graphic file (type png)
 
 <use figures/fired_wall.png>
-Package pdftex.def Info: figures/fired_wall.png used on input line 261.
+Package pdftex.def Info: figures/fired_wall.png used on input line 288.
 (pdftex.def)             Requested size: 14.22607pt x 14.22607pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 277.
+(babel)             in language  on input line 309.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 277.
-[6 <./figures/flag-ini.png>]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 292.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 292.
+(babel)             in language  on input line 309.
  [7 <./figures/player.png> <./figures/flag.png> <./figures/delivery.png> <./fig
 ures/fireshot.png> <./figures/wall.png> <./figures/player_with_flag.png> <./fig
 ures/fired_player_3.png> <./figures/player_stopped.png> <./figures/fired_wall.p
 ng>]
-<figures/flag-tree.png, id=150, 848.2089pt x 856.3995pt>
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 341.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 341.
+ [8]
+<figures/flag-tree.png, id=166, 848.2089pt x 856.3995pt>
 File: figures/flag-tree.png Graphic file (type png)
 
 <use figures/flag-tree.png>
-Package pdftex.def Info: figures/flag-tree.png used on input line 317.
-(pdftex.def)             Requested size: 324.08292pt x 327.20668pt.
+Package pdftex.def Info: figures/flag-tree.png used on input line 344.
+(pdftex.def)             Requested size: 422.71854pt x 426.79134pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 326.
+(babel)             in language  on input line 352.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 326.
- [8]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 333.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 333.
+(babel)             in language  on input line 352.
  [9 <./figures/flag-tree.png>]
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 338.
+(babel)             in language  on input line 364.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 343.
+(babel)             in language  on input line 364.
+ [10]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 365.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 370.
 
-<figures/heatmap.png, id=168, 602.25pt x 401.5pt>
+<figures/heatmap.png, id=183, 602.25pt x 401.5pt>
 File: figures/heatmap.png Graphic file (type png)
  <use figures/heatmap.png>
-Package pdftex.def Info: figures/heatmap.png used on input line 352.
+Package pdftex.def Info: figures/heatmap.png used on input line 379.
 (pdftex.def)             Requested size: 298.76253pt x 199.16928pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 386.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 356.
+(babel)             in language  on input line 392.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 392.
 
-[10]
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 359.
- <figures/dist_boxplot.png, id=178, 433.62pt x 289.08pt>
+[11 <./figures/heatmap.png (PNG copy)>]
+<figures/dist_boxplot.png, id=192, 433.62pt x 289.08pt>
 File: figures/dist_boxplot.png Graphic file (type png)
 
 <use figures/dist_boxplot.png>
-Package pdftex.def Info: figures/dist_boxplot.png used on input line 370.
+Package pdftex.def Info: figures/dist_boxplot.png used on input line 397.
 (pdftex.def)             Requested size: 298.75482pt x 199.16928pt.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 374.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 374.
- [11 <./figures/heatmap.png (PNG copy)>]
-<figures/ativs_boxplot.png, id=185, 433.62pt x 289.08pt>
+
+<figures/ativs_boxplot.png, id=193, 433.62pt x 289.08pt>
 File: figures/ativs_boxplot.png Graphic file (type png)
 
 <use figures/ativs_boxplot.png>
-Package pdftex.def Info: figures/ativs_boxplot.png used on input line 377.
+Package pdftex.def Info: figures/ativs_boxplot.png used on input line 404.
 (pdftex.def)             Requested size: 298.75482pt x 199.16928pt.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 384.
+(babel)             in language  on input line 411.
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 411.
+ [12 <./figures/dist_boxplot.png> <./figures/ativs_boxplot.png>]
+Package babel Info: Redefining portuges shorthand "|
+(babel)             in language  on input line 411.
 
-Overfull \hbox (20.80176pt too wide) in paragraph at lines 393--407
+Overfull \hbox (20.80176pt too wide) in paragraph at lines 420--434
  [] 
  []
 
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 411.
+(babel)             in language  on input line 445.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 411.
-[12 <./figures/dist_boxplot.png> <./figures/ativs_boxplot.png>]
+(babel)             in language  on input line 449.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 418.
+(babel)             in language  on input line 449.
+[13] (./article.bbl
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 426.
+(babel)             in language  on input line 24.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 426.
- [13]
-(./article.bbl
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 41.
-Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 41.
+(babel)             in language  on input line 24.
  [14])
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 438.
+(babel)             in language  on input line 465.
 Package babel Info: Redefining portuges shorthand "|
-(babel)             in language  on input line 438.
+(babel)             in language  on input line 465.
  [15]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 438.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 438.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 465.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 465.
  (./article.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 438.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 438.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 465.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 465.
 Package rerunfilecheck Info: File `article.out' has not changed.
 (rerunfilecheck)             Checksum: 9919C4162A2AAEB2C1E40CC12E0D833A;812.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 438.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 465.
  ) 
 Here is how much of TeX's memory you used:
- 21906 strings out of 494929
- 385299 string characters out of 6180141
- 465458 words of memory out of 5000000
- 24712 multiletter control sequences out of 15000+600000
+ 22378 strings out of 494929
+ 393800 string characters out of 6180141
+ 476490 words of memory out of 5000000
+ 25173 multiletter control sequences out of 15000+600000
  10780 words of font info for 40 fonts, out of 8000000 for 9000
  16 hyphenation exceptions out of 8191
- 62i,12n,77p,1291b,457s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 62i,12n,77p,1291b,451s stack positions out of 5000i,500n,10000p,200000b,80000s
  </home/victor/.texmf-var/fonts/pk/ljfour/jknappen/ec/tcrm1200.600pk></usr/sh
 are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fon
-ts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
-/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti1
-2.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-
-Output written on article.pdf (15 pages, 733755 bytes).
+xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fo
+nts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/publ
+ic/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on article.pdf (15 pages, 756241 bytes).
 PDF statistics:
- 272 PDF objects out of 1000 (max. 8388607)
- 222 compressed objects within 3 object streams
- 68 named destinations out of 1000 (max. 500000)
+ 290 PDF objects out of 1000 (max. 8388607)
+ 238 compressed objects within 3 object streams
+ 72 named destinations out of 1000 (max. 500000)
  176 words of extra memory for PDF output out of 10000 (max. 10000000)
 

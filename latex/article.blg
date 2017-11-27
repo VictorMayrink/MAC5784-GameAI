@@ -5,46 +5,49 @@ The style file: unsrtnat.bst
 Database file #1: references.bib.bib
 Warning--entry type for "mesa2017agent" isn't style-file defined
 --line 50 of file references.bib.bib
+Warning--entry type for "amit2017pathfind" isn't style-file defined
+--line 55 of file references.bib.bib
 Warning--empty year in mesa2017agent
-You've used 6 entries,
+Warning--empty year in amit2017pathfind
+You've used 7 entries,
             2481 wiz_defined-function locations,
-            588 strings with 5411 characters,
-and the built_in function-call counts, 2410 in all, are:
-= -- 200
+            591 strings with 5524 characters,
+and the built_in function-call counts, 2624 in all, are:
+= -- 219
 > -- 121
 < -- 5
-+ -- 48
++ -- 50
 - -- 36
-* -- 184
-:= -- 371
-add.period$ -- 18
-call.type$ -- 6
-change.case$ -- 11
-chr.to.int$ -- 6
-cite$ -- 8
-duplicate$ -- 119
-empty$ -- 227
+* -- 196
+:= -- 391
+add.period$ -- 20
+call.type$ -- 7
+change.case$ -- 13
+chr.to.int$ -- 7
+cite$ -- 11
+duplicate$ -- 133
+empty$ -- 259
 format.name$ -- 47
-if$ -- 515
+if$ -- 567
 int.to.chr$ -- 1
-int.to.str$ -- 7
+int.to.str$ -- 8
 missing$ -- 6
-newline$ -- 37
+newline$ -- 41
 num.names$ -- 15
-pop$ -- 58
+pop$ -- 71
 preamble$ -- 1
-purify$ -- 6
+purify$ -- 7
 quote$ -- 0
-skip$ -- 78
+skip$ -- 91
 stack$ -- 0
-substring$ -- 118
-swap$ -- 20
+substring$ -- 121
+swap$ -- 22
 text.length$ -- 1
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 39
-warning$ -- 1
+type$ -- 46
+warning$ -- 2
 while$ -- 19
 width$ -- 0
-write$ -- 81
-(There were 2 warnings)
+write$ -- 90
+(There were 4 warnings)
