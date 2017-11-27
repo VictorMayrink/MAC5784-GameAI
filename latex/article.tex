@@ -194,8 +194,6 @@ A função de avaliação utilizada é composta pela soma de duas componentes: $
 
 O custo do movimento é calculado da usando a seguinte convenção: movimentos ortogonais têm custo unitário, enquanto que os deslocamentos na diagonal têm custo de $\sqrt{2}$. Esta estratégia evita que os passageiros fiquem fazendo movimentos diagonais e trocando de direção com muita frequência, o que causaria um comportamento anormal de zigue-zague.
 
-Além do custo do movimento, 
-
 \section{Competição de capturar a bandeira}
 \label{sec:sim2}
 
@@ -312,20 +310,30 @@ As \textit{zonas de entrega} e as \textit{barreiras}, apesar de terem sido imple
 	\end{center}
 \end{table}
 
-Cada equipe possui 8 jogadores que podem assumir uma postura ofensiva (atacante) ou defensiva (defensor). A quantidade de atacantes e defensores da equipe é um parâmetro do modelo que pode ser alterado durante a simulação da partida. Essa configuração define o \textit{esquema tático} do time e o comportamento global de cada jogador. A figura \ref{fig:flag-decision-tree} representa a árvore de decisões executada quando o jogador  é ativado.
+Cada equipe possui 8 jogadores que podem assumir uma postura ofensiva (atacante) ou defensiva (defensor). A quantidade de atacantes e defensores da equipe é um parâmetro do modelo que pode ser alterado durante a simulação da partida. Essa configuração define o \textit{esquema tático} do time e o comportamento global de cada jogador. A figura \ref{fig:flag-decision-tree} representa a árvore de decisões executada quando o jogador é ativado; os números em cada nó da árvore foram adicionados para facilitar a identificação dos comportamentos e dos processos de tomada de decisão.
 
-Evidentemente, a velocidade dos jogadores deve ser inferior à dos projéteis, caso contrário seria muito improvável acertar um disparo sobre o oponente pois ele
-
-\begin{figure}[H]
+\begin{figure}
 	\centering
-	\includegraphics[totalheight=15cm]{figures/flag-tree.png}
+	\includegraphics[height=11.5cm]{figures/flag-tree.png}
 	\caption{Árvore de decisão dos \textit{jogadores}.}
 	\label{fig:flag-decision-tree}
 \end{figure}
 
+Evidentemente, a velocidade dos jogadores deve ser inferior à dos projéteis, caso contrário seria muito improvável acertar um disparo sobre o oponente pois ele poderia esquivar-se com muita facilidade. Além disso, não faz sentido um jogador mover-se na mesma velocidade de um projétil. A condição de ativação definida no nó $2$ da árvore cria uma condição probabilística para a ativação do jogador; isso possui dois efeitos principais: (1) reduz a velocidade dos jogadores, e (2) cada jogador não sabe quando será sua próxima oportunidade de se mover.
 
+A decisão do nó $4$ divide o comportamento dos jogadores de ataque e defesa; esta não é propriamente uma decisão do jogador, mas sim um parâmetro do modelo. Obviamente seria possível fazer com que os jogadores pudessem avaliar a situação do jogo e decidir se devem tomar uma postura ofensiva ou defensiva. Essa decisão poderia ser tomada com base, por exemplo, na distância do jogadores até as bandeiras e na postura dos demais jogadores. No entanto, optamos por manter essa decisão como um parâmetro da simulação; na próxima seção apresentamos o desempenho das equipes em relação ao esquema tático escolhido.
 
-Antes de descrever apenas o comportamento dos agentes do tipo \textit{jogador}, que o único que possui técnicas de 
+Os jogadores defensivos podem optar por três comportamentos distintos, conforme ilustra a árvore da figura \ref{fig:flag-decision-tree}. Primeiramente, o jogador observa se existe algum jogador inimigo nas proximidades, fato que representa uma ameaça à bandeia ou a sua própria integridade. Então, supondo que a arma do jogador está carregada, ele estima qual é chance de acertar oponente se fizer um disparo; se essa chance superar um determinado limite pré-definido então ele faz o disparo contra o oponente, caso contrário ele segue para o próximo nó de decisão.
+
+Se a chance de sucesso do disparo for baixa, então o jogador defensivo irá observar se o time adversário está com a posse da bandeira de sua equipe. Em caso positivo ele irá seguir e em direção a bandeira para tentar resgatá-la do inimigo, caso contrário, o jogador irá fazer uma patrulha no entorno da bandeira.
+
+Já comportamento dos jogadores de ataque funciona da seguinte maneira: primeiramente, se o jogador já está com a posse da bandeira adversária, então ele deve seguir para a zona de entrega tentando esquivar-se dos inimigos e projéteis. Caso contrário ele, segue a mesma lógica dos jogadores de defesa para verificar se existe algum inimigo próximo que represente uma ameaça e que possa ser atingido por um disparo. Se chance de sucesso do disparo for alta ele lança o projétil, caso contrário ele observa quem está com a posse da bandeira do adversário. Se for alguém da sua própria equipe, ele deve dar cobertura ao portador da bandeira; mas se a bandeira não está na posse da sua equipe ele deve tentar capturá-la.
+
+A árvore de decisão da figura \ref{fig:flag-decision-tree} descreve o comportamento dos jogadores em nível de abstração bastante elevado. Por exemplo ao decidir fazer um disparo, eé necessário verificar se chance de acertar o adversário é suficientemente alta. Para isso é necessário saber em qual direção atirar e como calcular a chance de sucesso. Esta decisão foi implementada usando o conceito de \textit{mapas de influência} (ver \cite{millington2016artificial}). Cada jogador possui seu próprio de campo de influência, que modifica o mapa de influência do ambiente; da mesma forma os projéteis também possuem um campo de influência dentro do ambiente. A decisão de fazer o disparo é implementada através da soma do produto ponto-a-ponto do campo de influência do projétil a ser criado sobre o mapa de influência dos jogadores (jogadores aliados têm uma influência negativa e jogadores inimigos têm influência positiva). Se este somatório for alto significa que o campo de influência do projétil cruza com o campo de influência dos jogadores adversários, e, portanto, o disparo tem uma chance razoável de acertar o alvo. Por outro lado, valores negativos indicam que o disparo pode acertar jogadores aliados.
+
+O campo de influência dos jogadores e dos projéteis, assim como o valor limiar para decidir efetuar o disparo, foram definidos após alguns testes empíricos. Os campos de influência dos projéteis e jogadores podem ser consultados no arquivo \textit{/projects/flag/influence\_masks.py} do repositório deste projeto.
+
+Além dos mapas de influência, utilizamos também o algoritmo $A^*$ para traçar a rota dos jogadores ao tentar capturar e entregar a bandeira do adversário. O custo dos movimentos no algoritmo $A^*$ também leva em consideração os mapas de influencia dos jogadores e projéteis, para evitar rotas que: (1) cruzem com o trajeto de um projétil (evita o risco de ser atingido), (2) passem muito próximo de um inimigo -evita que o inimigo faça um disparo \textit{à queima roupa}), ou (3) passem muito próximo de outro jogador aliado (evita ataques concentrados, o que, em geral, tende a ser uma estratégia ruim).
 
 \section{Resultados}
 \label{sec:resultados}
