@@ -199,7 +199,7 @@ Além do custo do movimento,
 \section{Competição de capturar a bandeira}
 \label{sec:sim2}
 
-Este experimento simula uma competição entre dois times adversários. O objetivo de cada equipe é capturar a bandeira do oponente e levá-la até a área de entrega. A figura \ref{fig:flag-ini} ilustra a configuração inicial do jogo:
+Este experimento simula uma competição entre dois times adversários. O objetivo de cada equipe é capturar a bandeira do oponente e levá-la até a área de entrega, ao mesmo tempo em que deve defender-se dos ataques do adversário. A figura \ref{fig:flag-ini} ilustra a configuração inicial do jogo:
 
 \begin{figure}[H]
 	\centering
@@ -212,14 +212,14 @@ Para este jogo foram necessários 5 tipos diferentes de agentes:
 
 \begin{itemize}
 	\setlength\itemsep{0pt}
-	\item jogador (\textit{player}): possui a capacidade de se mover; capturar e transportar a bandeira do time adversário; e disparar projéteis para defender sua bandeira.
+	\item jogador (\textit{player}): possui a capacidade de se mover; capturar e transportar a bandeira do time adversário; e disparar projéteis contra os oponentes.
 	\item bandeira (\textit{flag}): é um agente totalmente passivo. Uma vez capturada e entregue pelo time adversário, a bandeira reaparece na posição inicial.
 	\item projétil (\textit{fireshot}): é o agente criado quando um jogador realiza um disparo. O projétil movimenta-se em uma trajetória retilínea até atingir algum alvo ou percorrer uma distância máxima. 
-	\item zona de entrega (\textit{delivery}): também foi modelada como um agente. Apesar de não poder se mover, a zona de entrega pode ser posicionada em qualquer ponto do \textit{grid}. Sua única ação é recolher a bandeira do time adversário quando algum jogador a trouxer até a sua posição.
+	\item zona de entrega (\textit{delivery}): também foi modelada como um agente. Apesar de não poder se mover, a zona de entrega pode ser posicionada em qualquer ponto do \textit{grid}. Sua única ação é recolher a bandeira do time adversário quando algum jogador a trouxer até a sua localização.
 	\item barreira (\textit{wall}): assim como na da simulação anterior, a barreira é um agente totalmente inanimado. Sua única função é obstruir o movimento dos jogadores e funcionar como um anteparo para os projéteis.
 \end{itemize}
 
-O cenário da simulação é um campo de batalha discretizado em uma malha de $40 \times 27$ células. Cada time possui sua própria bandeira, oito jogadores e uma área de entrega que ocupa oito células (na prática, existe um agente do tipo \textit{zona de entrega} em cada célula), conforme ilustrado na figura \ref{fig:flag-ini}. A tabela abaixo apresenta a representação gráfica dos agentes:
+O cenário da simulação representa um campo de batalha discretizado em uma malha de $40 \times 27$ células. Cada time possui sua própria bandeira, oito jogadores e uma área de entrega que ocupa oito células (na prática, existe um agente do tipo \textit{zona de entrega} em cada célula), conforme ilustrado na figura \ref{fig:flag-ini}. A tabela abaixo apresenta a representação gráfica dos agentes:
 
 \begin{table}[h!]
 	\begin{center}
@@ -275,15 +275,57 @@ Para manter o equilíbrio do jogo, foram estabelecidas as seguintes regras:
 \begin{enumerate}
 	\setlength\itemsep{0em}
 	\item A posição inicial dos jogadores e das bandeiras é simétrica, de forma a não favorecer nenhuma das duas equipes
-	\item A cada passo da simulação cada jogador tem uma probabilidade de 50\% de poder fazer alguma ação.
-	\item Se o jogador tiver a oportunidade de tomar uma ação, ele deve escolher se deseja mover-se ou fazer um disparo (não é permitido fazer as duas ações ao mesmo tempo).
-	\item Os jogadores podem movimentar-se para qualquer uma das 8 células vizinhas (vizinhança de Moore), desde que elas não estejam ocupadas por algum outro jogador ou por uma barreira. Também não é permitido que o jogador se movimente para uma célula que esteja na vizinhança da bandeira de sua própria equipe, exceto se ela estiver em posse do time adversário.
+	\item A cada passo da simulação cada jogador tem uma probabilidade de 50\% de ser ativado, isto é, de ter a oportunidade de se mover ou fazer um disparo.
+	\item Ao ser ativado, o jogador deve escolher se deseja mover-se ou fazer um disparo (não é permitido fazer as duas ações ao mesmo tempo).
+	\item Os jogadores podem movimentar-se para qualquer uma das 8 células vizinhas (vizinhança de Moore), desde que elas não estejam ocupadas por algum outro jogador ou por uma barreira.
 	\item O jogador tem direito de mudar sua orientação antes de fazer um disparo. Um agente \textit{projétil} será criado na célula em que sua orientação está apontando e irá seguir em linha reta de acordo com esta direção inicial.
 	\item O projétil se desloca uma célula por turno e, portanto, tem, em média, o dobro da velocidade de um jogador
 	\item O projétil é removido quando atinge um jogador, uma barreira, ou depois de percorrer uma distância máxima de 15 células.	
-	\item O jogador que for atingido por um projétil fica imobilizado por 10 turnos
+	\item O jogador que for atingido por um projétil fica imobilizado por 10 turnos.
+	\item Após o período de imobilização, o \textit{jogador} atingido fica imune por 5 turnos.
 	\item Ao fazer um disparo o jogador fica 3 turnos sem poder disparar novamente (tempo de recarga). No entanto, durante esse período ele continua tendo oportunidade de se mover.
 \end{enumerate}
+
+Os \textit{jogadores} são os únicos agentes que utilizam técnicas de inteligência artificial mais elaboradas para a tomada de decisão. Os demais agentes, ou possuem um comportamento puramente determinístico, ou sequer são ativados durante a simulação. 
+
+As \textit{bandeiras}, por exemplo, possuem uma lógica muito simples. Elas são ativadas em todos os turnos e sua única ação é verificar se a sua posição corrente está dentro da zona de entrega da equipe adversária; em caso positivo, ela reaparece na sua posição inicial e incrementa o contador de pontos do time oponente.
+
+Os agentes do tipo \textit{projétil} são criados quando um \textit{jogador} realiza um disparo. Sua posição inicial será a célula vizinha que é apontada pela orientação do jogador que fez o disparo. Essa orientação é repassada para o projétil como um atributo que se mantém constante durante todo o seu ciclo de vida. Assim, a cada novo turno, os projéteis movem-se para a célula vizinha apontada pela orientação definida inicialmente (o que garante um movimento retilíneo). Ao atingir um agente do tipo \textit{jogador}, o projétil altera seu estado para ``imobilizado'' (exceto se ele estiver em condição de imunidade); o que, segundo as regras do jogo, significa que este jogador não poderá ser ativado pelos próximos 10 turnos. Ao colidir com um agente do tipo \textit{jogador} ou \textit{barreira} o projétil modifica sua aparência gráfica (vide tabela \ref{tbl:graphics}) e é então removido no turno seguinte. Finalmente, toda vez que o projétil se movimenta ele incrementa uma de suas variáveis de estado que armazena a distância total percorrida; se esta variável for maior que o alcance máximo do projétil (definido em 15 células) ele é então removido da simulação.
+
+As \textit{zonas de entrega} e as \textit{barreiras}, apesar de terem sido implementadas como agentes para facilitar a modelagem do problema, não possuem nenhum comportamento ativo durante a simulação. Portanto esses agentes sequer foram adicionados ao \textit{scheduler} do modelo. A tabela \ref{tbl:ativacao} resume a como funciona a ativação de cada tipo de agente.
+
+\begin{table}[h!]
+	\begin{center}
+		\begin{tabular}{ll}
+			\toprule
+			Agente & Ativação \\ 
+			\cmidrule(r){1-1}\cmidrule(lr){2-2}
+			Jogador   & Probabilística (50\%) \\
+			Bandeiras & Todos os turnos       \\
+			Projétil  & Todos os turnos		  \\
+			Zona de entrega & Não é ativado (não tem ação) \\
+			Barreira        & Não é ativado (não tem ação)\\
+			\bottomrule
+		\end{tabular}
+		\caption{Ativação dos agentes no \textit{scheduler} do modelo.}
+		\label{tbl:ativacao}
+	\end{center}
+\end{table}
+
+Cada equipe possui 8 jogadores que podem assumir uma postura ofensiva (atacante) ou defensiva (defensor). A quantidade de atacantes e defensores da equipe é um parâmetro do modelo que pode ser alterado durante a simulação da partida. Essa configuração define o \textit{esquema tático} do time e o comportamento global de cada jogador. A figura \ref{fig:flag-decision-tree} representa a árvore de decisões executada quando o jogador  é ativado.
+
+Evidentemente, a velocidade dos jogadores deve ser inferior à dos projéteis, caso contrário seria muito improvável acertar um disparo sobre o oponente pois ele
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[totalheight=15cm]{figures/flag-tree.png}
+	\caption{Árvore de decisão dos \textit{jogadores}.}
+	\label{fig:flag-decision-tree}
+\end{figure}
+
+
+
+Antes de descrever apenas o comportamento dos agentes do tipo \textit{jogador}, que o único que possui técnicas de 
 
 \section{Resultados}
 \label{sec:resultados}
